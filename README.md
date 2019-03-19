@@ -1,2 +1,6 @@
-# Belu_Kafe
-Repositorio para el curso de Proyecto Integrador de Redes de Comunicación de Datos y Sistemas Operativos
+# Belu_Kafe 
+
+Universidad de Costa Rica
+CI-0123
+Proyecto Integrador de Redes de Comunicación de Datos y Sistemas Operativos
+Repositorio de Proyectos
