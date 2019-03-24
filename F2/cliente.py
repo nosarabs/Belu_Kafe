@@ -32,39 +32,44 @@ else:
     
     
 colaMensajes = Queue()
-# Se importa el módulo
+semaforo = threading.Semaphore(0)
 
 # Creación de un objeto socket (lado cliente)
 obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# Conexión con el servidor. Parametros: IP (puede ser del tipo 192.168.1.1 o localhost), Puerto
+# Conexión con el servidor
 obj.connect((host, port))
 print("Conectado al contador")
 
-# Creamos un bucle para retener la conexion
+# Creamos un bucle para seguir obteniendo datos, se sale cuando se digite un "1"
 def leer():
     while True:
     # Instanciamos una entrada de datos para que el cliente pueda enviar mensajes
         print('Escriba el mensaje que desea enviar al contador: ')
         mens = input()
         if mens == "1":
+            # Con el método put, encolamos el mensaje            
             colaMensajes.put(mens)
+            #Luego liberamos el semáforo
+            semaforo.release()
             break
         else:
-            # Con el método send, enviamos el mensaje
+            # Con el método put, encolamos el mensaje
             colaMensajes.put(mens)
-            # obj.sendall(mens.encode('utf-8'))
+            #Luego liberamos el semáforo
+            semaforo.release()
 
 def enviar():
     while True:
-        if colaMensajes.empty() == False:
-            mensaje = colaMensajes.get()
-            if mensaje != "1":
-                obj.sendall(mensaje.encode('utf-8')) 
-            else:
-                obj.sendall(mensaje.encode('utf-8'))
-                print("Conexión cerrada")
-                break
+        #Adquirimos el semáforo
+        semaforo.acquire()
+        mensaje = colaMensajes.get()
+        if mensaje != "1":
+            obj.sendall(mensaje.encode('utf-8')) 
+        else:
+            obj.sendall(mensaje.encode('utf-8'))
+            print("Conexión cerrada")
+            break
 
 
 hiloLector = Thread(target=leer, args=())

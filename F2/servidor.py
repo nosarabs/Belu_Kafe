@@ -27,6 +27,8 @@ def consola():
     print("digite una direccion IP y posteriormente se le solicitará un puerto ")
     while True:
         direccion= input()
+        if direccion == "1":
+            break
         print("ud ha digitado la dirección: "+str(direccion)+" digite un puerto: ")
         puerto= input()
         print("resultados... ")
@@ -52,7 +54,6 @@ cli, addr = ser.accept()
 hiloConsola = Thread(target=consola, args=())
 hiloConsola.start()
 
-
 seguir = True
 while seguir:
     # Recibimos el mensaje, con el metodo recv recibimos datos. Por parametro la cantidad de bytes para recibir
@@ -67,6 +68,7 @@ while seguir:
         cli.send(recibido)
     if recibido.decode() == "1":
         print("conexion de la IP: " + str(addr[0]) + " Puerto: " + str(addr[1]) + " ha sido cerrada")
-        # cli.close()
-        # Ser.close()
         seguir = False
+
+#cli.close()
+#ser.close()
