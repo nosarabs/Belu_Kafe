@@ -5,20 +5,32 @@ from threading import Thread
 import time
 from queue import Queue
 import threading
+import sys
 
-ip = str(sys.argv[1])
-regex = r"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b"
-x = re.search(regex, ip)
-try:
-    print("Dirección IP: ", x.group())
-except:
-    print("Dirección IP Invalida")
-
-
-
-# Variables
-host = 'localhost'
-port = 8050
+host=""
+port=0
+if len(sys.argv) > 2:
+    ip = str(sys.argv[1])
+    puerto= str(sys.argv[2])
+    regex = r"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b"
+    x = re.search(regex, ip)
+    try:
+        if ip=="localhost":
+           host=ip
+           port=int(puerto)
+        else:   
+           print("Dirección IP: ", x.group())
+           host=ip
+           port=int(puerto)
+    except:
+        print("Dirección IP Invalida")
+        sys.exit(0)
+else:
+    print("No ingresó argumentos: ")
+    print("Debe ingresar ip y puerto en los argumentos")
+    sys.exit(0)
+    
+    
 colaMensajes = Queue()
 # Se importa el módulo
 
@@ -51,8 +63,9 @@ def enviar():
                 obj.sendall(mensaje.encode('utf-8')) 
             else:
                 obj.sendall(mensaje.encode('utf-8'))
+                print("Conexión cerrada")
                 break
-# Cerramos la instancia del objeto servidor
+
 
 hiloLector = Thread(target=leer, args=())
 hiloEnviador = Thread(target=enviar, args=())
@@ -61,6 +74,3 @@ hiloLector.start()
 hiloEnviador.start()
 
 colaMensajes.join()
-
-# Imprimimos la palabra Adios para cuando se cierre la conexion
-print("Conexión cerrada")
