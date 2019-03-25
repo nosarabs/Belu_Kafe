@@ -70,14 +70,16 @@ def enviar():
             obj.sendall(mensaje.encode('utf-8'))
             
             recibido = obj.recv(1024)
+            #cadena = recibido.decode()
             print("Ahora se presentaran los resultados en el siguiente orden: \n")
-            print("(Frase, cantidad palabras, dirección IP, Puerto) \n\n")
+            print("(Frase, cantidad palabras) \n\n")
             while(True):
-                if recibido.decode()[1]=="1" and recibido.decode()[2]==",":
+                if recibido.decode()[recibido.decode().find("(1, 0)") : len(recibido.decode())]=="(1, 0)":
                     break
                 print(recibido.decode() + "\n")
-                #time.sleep(0.5)
+                time.sleep(0.5)
                 recibido = obj.recv(1024)
+                #cadena=recibido.decode()
                    
             print("Conexión cerrada")
             break
