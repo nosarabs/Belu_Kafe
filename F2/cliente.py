@@ -74,7 +74,7 @@ def enviar():
             
             recibido = obj.recv(1024)
             print("Ahora se presentaran los resultados en el siguiente orden: \n")
-            print("(Frase, Cantidad de Palabras, Dirección IP, Puerto) \n\n")
+            print("(Frase, Cantidad de Palabras) \n\n")
             while(True):
                 if recibido.decode()[1]=="1" and recibido.decode()[2]==",":
                     break
