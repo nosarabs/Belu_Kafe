@@ -38,8 +38,12 @@ semaforo = threading.Semaphore(0)
 obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Conexión con el servidor
-obj.connect((host, port))
-print("Conectado al contador")
+try:
+    obj.connect((host, port))
+    print("Conectado al Contador")
+except:
+    print("Error en Connect")
+    sys.exit(0)
 
 # Creamos un bucle para seguir obteniendo datos, se sale cuando se digite un "1"
 def leer():
@@ -71,7 +75,7 @@ def enviar():
             
             recibido = obj.recv(1024)
             print("Ahora se presentaran los resultados en el siguiente orden: \n")
-            print("(Frase, cantidad palabras, dirección IP, Puerto) \n\n")
+            print("(Frase, Cantidad de Palabras, Dirección IP, Puerto) \n\n")
             while(True):
                 if recibido.decode()[1]=="1" and recibido.decode()[2]==",":
                     break

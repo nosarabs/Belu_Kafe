@@ -4,6 +4,7 @@ from threading import Thread
 import time
 from queue import Queue
 import threading
+import re # Para usar RegEx (Expresiones Regulares)
 
 class frase:
     def __init__(self, palabra, cantidad, Ip, puerto):
@@ -27,35 +28,66 @@ my_lista=[]
 ser = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Puerto y servidor que debe escuchar
-ser.bind(("localhost", 9999))
+try:
+    ser.bind(("localhost", 9999))
+except:
+    print("Error en Binding")
+    sys.exit(0)
 
 # Aceptamos conexiones entrantes con el metodo listen. Por parámetro las conexiones simutáneas.
-ser.listen(1)
+try:
+    ser.listen(1)
+except:
+    print("Error en Listen")
+    sys.exit(0)
+
 
 def consola():
     print("Si desea que se desplieguen los resultados almacenados hasta el momento de una direccion IP y un puerto dato") 
     print("Digite una direccion IP y posteriormente se le solicitará un puerto ")
     print("O ingrese 0 para cerrar el servidor")
     while True:
-        direccion= input()
-        if direccion=="0":
+        direccion = input()
+        if direccion == "0":
             ser.close()
-            sys.exit(0)   
+            sys.exit(0)
 
-        print("ud ha digitado la dirección: "+str(direccion)+" digite un puerto: ")
-        puerto= input()
-        print("resultados... ")
-        resultados=0
-        for i in range(len(my_lista)):
-                    if str(my_lista[i].Ip)==direccion and str(my_lista[i].puerto)==puerto: 
-                         print(my_lista[i].imp())
-                         resultados+=1
-        if resultados ==0:
-            print("No se encontraron resultados, verifique que la dirección IP y el puerto dado son correctos")
-        
+        valido = False
+        if direccion == "localhost":
+            print("Se ha digitado la dirección: " + direccion + "\nDigite un puerto: ")
+            direccion = "127.0.0.1"
+            puerto = input()
+            valido = True
+        else:
+            regex = r"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b"
+            x = re.search(regex, direccion)
+            try:
+                direccion = x.group()
+                print("Se ha digitado la dirección: " + direccion + "\nDigite un puerto: ")
+                puerto = input()
+                valido = True
+            except:
+                print("Dirección IP Inválida")
+
+        if valido:
+            print("Buscando Resultados... ")
+            resultados = 0
+            for i in range(len(my_lista)):
+                        if str(my_lista[i].Ip)==direccion and str(my_lista[i].puerto)==puerto:
+                             print(my_lista[i].imp())
+                             resultados+=1
+
+            if resultados == 0:
+                print("No se encontraron resultados, verifique que la dirección IP y el puerto dado son correctos.")
+
 
 # Instanciamos un objeto cli (socket cliente) para recibir datos
-cli, addr = ser.accept()
+try:
+    cli, addr = ser.accept()
+except:
+    print("Error en Accept")
+    sys.exit(0)
+
 hiloConsola = Thread(target=consola, args=())
 hiloConsola.start()
 
@@ -84,7 +116,7 @@ def recibir():
 
 
 def contador():
-    actual=0
+    actual = 0
     
     while True:
         semaforo.acquire()
@@ -92,7 +124,7 @@ def contador():
         if h.getpalabra()=="1":
             for i in range(len(my_lista)):
                 cli.send(my_lista[i].impForClient().encode('utf-8'))
-            print("conexion de la IP: " + str(addr[0]) + " Puerto: " + str(addr[1]) + " ha sido cerrada")
+            print("Conexión de la IP: " + str(addr[0]) + " Puerto: " + str(addr[1]) + " ha sido cerrada")
             break
         x = len(h.getpalabra().split())
         h.setcant(x)
