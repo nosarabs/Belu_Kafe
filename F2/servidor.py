@@ -49,7 +49,6 @@ def consola():
     while True:
         direccion = input()
         if direccion == "0":
-            hiloConsola.join()
             ser.close()
             sys.exit(0)
 
