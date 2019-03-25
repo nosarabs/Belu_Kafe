@@ -4,6 +4,7 @@ from threading import Thread
 import time
 from queue import Queue
 import threading
+import re # Para usar RegEx (Expresiones Regulares)
 
 class frase:
     def __init__(self, palabra, cantidad, Ip, puerto):
@@ -27,7 +28,10 @@ my_lista=[]
 ser = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Puerto y servidor que debe escuchar
-ser.bind(("localhost", 9999))
+try:
+    ser.bind(("localhost", 9999))
+except:
+    print("Error en Binding()")
 
 # Aceptamos conexiones entrantes con el metodo listen. Por parámetro las conexiones simutáneas.
 ser.listen(1)
@@ -37,20 +41,34 @@ def consola():
     print("Digite una direccion IP y posteriormente se le solicitará un puerto ")
     print("O ingrese 0 para cerrar el servidor")
     while True:
-        direccion= input()
-        if direccion=="0":
+        direccion = input()
+        if direccion == "0":
             ser.close()
-            sys.exit(0)   
+            sys.exit(0)
 
-        print("ud ha digitado la dirección: "+str(direccion)+" digite un puerto: ")
-        puerto= input()
+        if direccion == "localhost":
+            print("ud ha digitado la dirección: " + str(direccion) + " digite un puerto: ")
+            puerto = input()
+        else:
+            regex = r"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b"
+            x = re.search(regex, direccion)
+            print(x.group())
+            try:
+                direccion = x.group()
+                print("ud ha digitado la dirección: " + direccion + " digite un puerto: ")
+                puerto = input()
+            except:
+                print("Dirección IP Inválida")
+
+
         print("resultados... ")
-        resultados=0
+        resultados = 0
         for i in range(len(my_lista)):
                     if str(my_lista[i].Ip)==direccion and str(my_lista[i].puerto)==puerto: 
                          print(my_lista[i].imp())
                          resultados+=1
-        if resultados ==0:
+
+        if resultados == 0:
             print("No se encontraron resultados, verifique que la dirección IP y el puerto dado son correctos")
         
 
