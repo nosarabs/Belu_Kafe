@@ -49,6 +49,7 @@ def consola():
     while True:
         direccion = input()
         if direccion == "0":
+            hiloConsola.join()
             ser.close()
             sys.exit(0)
 
@@ -108,7 +109,7 @@ def recibir():
         if recibido.decode() == "1":
             p=frase(recibido.decode(),0,addr[0], addr[1])
             my_lista.append(p)
-            continuar=False
+            continuar = False
             
         semaforo.release()
         if continuar == False:
