@@ -23,7 +23,7 @@ class frase:
         return self.palabra
 
 my_lista=[]
-
+aceptar=True
 # instanciamos un objeto para trabajar con el socket
 ser = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -43,14 +43,17 @@ except:
 
 
 def consola():
+    global aceptar
     print("Si desea que se desplieguen los resultados almacenados hasta el momento de una direccion IP y un puerto dato") 
     print("Digite una direccion IP y posteriormente se le solicitará un puerto ")
     print("O ingrese 0 para cerrar el servidor")
-    while True:
+    seguir=True
+    while seguir:
         direccion = input()
         if direccion == "0":
-            ser.close()
-            sys.exit(0)
+            aceptar=False
+            seguir=False
+            break
 
         valido = False
         if direccion == "localhost":
@@ -79,21 +82,7 @@ def consola():
 
             if resultados == 0:
                 print("No se encontraron resultados, verifique que la dirección IP y el puerto dado son correctos.")
-
-
-# Instanciamos un objeto cli (socket cliente) para recibir datos
-try:
-    cli, addr = ser.accept()
-except:
-    print("Error en Accept")
-    sys.exit(0)
-
-hiloConsola = Thread(target=consola, args=())
-hiloConsola.start()
-
-continuar: bool
-semaforo = threading.Semaphore(0)
-
+                
 def recibir():
     continuar=True
     while True:
@@ -113,26 +102,43 @@ def recibir():
         semaforo.release()
         if continuar == False:
             break
-
-
+ 
 def contador():
-    actual = 0
-    
+    global act
     while True:
         semaforo.acquire()
-        h = my_lista[actual]
+        h = my_lista[act]
         if h.getpalabra()=="1":
-            for i in range(len(my_lista)):
-                cli.send(my_lista[i].impForClient().encode('utf-8'))
-                time.sleep(0.8)
-            print("conexion de la IP: " + str(addr[0]) + " Puerto: " + str(addr[1]) + " ha sido cerrada")
+           # time.sleep(1)
+            cli.send(h.impForClient().encode('utf-8'))
+            act+=1
+            print("Conexión de la IP: " + str(addr[0]) + " Puerto: " + str(addr[1]) + " ha sido cerrada")
             break
         x = len(h.getpalabra().split())
         h.setcant(x)
-        actual+=1
+        cli.send(h.impForClient().encode('utf-8'))
+        #time.sleep(1)
+        act+=1
 
-hiloRecibidor = Thread(target=recibir, args=())
-hiloContador = Thread(target=contador, args=())
 
-hiloRecibidor.start()
-hiloContador.start()
+
+hiloConsola = Thread(target=consola, args=())
+hiloConsola.start()
+continuar: bool
+act=0
+semaforo = threading.Semaphore(0)
+# Instanciamos un objeto cli (socket cliente) para recibir datos
+while aceptar:
+    try:
+        cli, addr = ser.accept()
+    except:
+        print("Error en Accept")
+        sys.exit(0)
+
+    hiloRecibidor = Thread(target=recibir, args=())
+    hiloContador = Thread(target=contador, args=())
+
+    hiloRecibidor.start()
+    hiloContador.start()
+ser.close()
+sys.exit(0)

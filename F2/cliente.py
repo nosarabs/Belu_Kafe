@@ -74,12 +74,13 @@ def enviar():
             
             recibido = obj.recv(1024)
             print("Ahora se presentaran los resultados en el siguiente orden: \n")
-            print("(Frase, cantidad palabras) \n\n")
+            print("(Frase, Cantidad de Palabras, Dirección IP, Puerto) \n\n")
             while(True):
-                if recibido.decode()[recibido.decode().find("(1, 0)") : len(recibido.decode())]=="(1, 0)":
+                if recibido.decode()[1]=="1" and recibido.decode()[2]==",":
                     break
-                print(recibido.decode() + "\n")
-                time.sleep(0.5)
+                print(recibido.decode())
+                print()
+                #time.sleep(0.5)
                 recibido = obj.recv(1024)
                    
             print("Conexión cerrada")
