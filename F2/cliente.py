@@ -38,7 +38,7 @@ obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Conexión con el servidor
 try:
-    obj.connect((host, port))
+    obj.connect_ex((host, port))
     print("Conectado al Contador")
 except:
     print("Error en Connect")
@@ -66,11 +66,11 @@ def enviar():
     while True:
         #Adquirimos el semáforo
         semaforo.acquire()
-        mensaje = colaMensajes.get()
+        mensaje = colaMensajes.get().encode('utf-8')
         if mensaje != "1":
-            obj.sendall(mensaje.encode('utf-8')) 
+            obj.sendall(mensaje) 
         else:
-            obj.sendall(mensaje.encode('utf-8'))
+            obj.sendall(mensaje)
             
             recibido = obj.recv(1024)
             print("Ahora se presentaran los resultados en el siguiente orden: \n")
