@@ -66,11 +66,11 @@ def enviar():
     while True:
         #Adquirimos el semáforo
         semaforo.acquire()
-        mensaje = colaMensajes.get().encode('utf-8')
+        mensaje = colaMensajes.get()
         if mensaje != "1":
-            obj.sendall(mensaje) 
+            obj.sendall(mensaje.encode('utf-8')) 
         else:
-            obj.sendall(mensaje)
+            obj.sendall(mensaje.encode('utf-8'))
             
             recibido = obj.recv(1024)
             print("Ahora se presentaran los resultados en el siguiente orden: \n")
