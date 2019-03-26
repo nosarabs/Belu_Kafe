@@ -22,62 +22,13 @@ class frase:
     def getpalabra(self):
         return self.palabra
         
-
-
-my_lista=[]
-aceptar=True
-dip=""
-if len(sys.argv) > 1:
-    ip = str(sys.argv[1])
-    regex = r"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b"
-    x = re.search(regex, ip)
-    try:
-        if ip=="localhost":
-           dip=ip
-        else:   
-           print("Dirección IP: ", x.group())
-           dip=ip
-    except:
-        print("Dirección IP Invalida")
-        sys.exit(0)
-else:
-    print("No ingresó argumentos: ")
-    print("Debe ingresar ip del servidor")
-    sys.exit(0)
-
-
-
-# instanciamos un objeto para trabajar con el socket
-ser = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# Puerto y servidor que debe escuchar
-try:
-    ser.bind((dip, 9999))
-except:
-    print("Error en Binding")
-    sys.exit(0)
-
-# Aceptamos conexiones entrantes con el metodo listen. Por parámetro las conexiones simutáneas.
-try:
-    ser.listen(1)
-except:
-    print("Error en Listen")
-    sys.exit(0)
-
-
 def consola():
     global aceptar
     print("Si desea que se desplieguen los resultados almacenados hasta el momento de una direccion IP y un puerto dato") 
     print("Digite una direccion IP y posteriormente se le solicitará un puerto ")
-    print("O ingrese 0 para cerrar el servidor")
     seguir=True
     while seguir:
         direccion = input()
-        if direccion == "0":
-            print("se ha ingresado un 0, se cerrara el servidor")
-            aceptar=False
-            seguir=False
-            break
 
         valido = False
         if direccion == "localhost":
@@ -144,7 +95,43 @@ def contador():
         #time.sleep(1)
         act+=1
 
+my_lista=[]
+aceptar=True
+dip=""
+if len(sys.argv) > 1:
+    ip = str(sys.argv[1])
+    regex = r"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b"
+    x = re.search(regex, ip)
+    try:
+        if ip=="localhost":
+           dip=ip
+        else:   
+           print("Dirección IP: ", x.group())
+           dip=ip
+    except:
+        print("Dirección IP Invalida")
+        sys.exit(0)
+else:
+    print("No ingresó argumentos: ")
+    print("Debe ingresar ip del servidor")
+    sys.exit(0)
 
+# instanciamos un objeto para trabajar con el socket
+ser = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Puerto y servidor que debe escuchar
+try:
+    ser.bind((dip, 9999))
+except:
+    print("Error en Binding")
+    sys.exit(0)
+
+# Aceptamos conexiones entrantes con el metodo listen. Por parámetro las conexiones simutáneas.
+try:
+    ser.listen(1)
+except:
+    print("Error en Listen")
+    sys.exit(0)
 
 hiloConsola = Thread(target=consola, args=())
 hiloConsola.start()
