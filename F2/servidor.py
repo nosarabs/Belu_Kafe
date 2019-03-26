@@ -16,7 +16,7 @@ class frase:
     def imp(self): 
         return "(" +self.palabra+", "+ str(self.cantidad)+", "+ str(self.Ip)+", "+ str(self.puerto)+")"
     def impForClient(self): 
-        return "(" +self.palabra+", "+ str(self.cantidad) + ")"
+        return "(" +self.palabra+", "+ str(self.cantidad) + ")\n"
     def setcant(self,cantidad):
         self.cantidad=cantidad
     def getpalabra(self):
