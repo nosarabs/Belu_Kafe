@@ -86,7 +86,7 @@ def contador():
         if h.getpalabra()=="1":
            # time.sleep(1)
             cli.send(h.impForClient().encode('utf-8'))
-            act+=1
+            my_lista.pop(act)
             print("Conexión de la IP: " + str(addr[0]) + " Puerto: " + str(addr[1]) + " ha sido cerrada")
             break
         x = len(h.getpalabra().split())
