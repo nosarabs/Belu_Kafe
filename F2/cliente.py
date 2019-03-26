@@ -7,6 +7,47 @@ from queue import Queue
 import threading
 import sys
 
+# Creamos un bucle para seguir obteniendo datos, se sale cuando se digite un "1"
+def leer():
+    while True:
+    # Instanciamos una entrada de datos para que el cliente pueda enviar mensajes
+        print('Escriba el mensaje que desea enviar al contador: ')
+        mens = input()
+        if mens == "1":
+            # Con el método put, encolamos el mensaje            
+            colaMensajes.put(mens)
+            #Luego liberamos el semáforo
+            semaforo.release()
+            break
+        else:
+            # Con el método put, encolamos el mensaje
+            colaMensajes.put(mens)
+            #Luego liberamos el semáforo
+            semaforo.release()
+
+def enviar():
+    while True:
+        #Adquirimos el semáforo
+        semaforo.acquire()
+        mensaje = colaMensajes.get()
+        if mensaje != "1":
+            obj.sendall(mensaje.encode('utf-8')) 
+        else:
+            obj.sendall(mensaje.encode('utf-8'))
+            break
+
+def recibir():
+    while True:
+        recibido = obj.recv(1024)
+        if recibido.decode()[1]=="1" and recibido.decode()[2]==",":
+            for i in range(len(lista)):
+                print(lista[i])
+            break
+        lista.append(recibido.decode())
+
+    print("Conexión cerrada")
+
+lista=[]
 host=""
 port=0
 if len(sys.argv) > 2:
@@ -44,53 +85,12 @@ except:
     print("Error en Connect")
     sys.exit(0)
 
-# Creamos un bucle para seguir obteniendo datos, se sale cuando se digite un "1"
-def leer():
-    while True:
-    # Instanciamos una entrada de datos para que el cliente pueda enviar mensajes
-        print('Escriba el mensaje que desea enviar al contador: ')
-        mens = input()
-        if mens == "1":
-            # Con el método put, encolamos el mensaje            
-            colaMensajes.put(mens)
-            #Luego liberamos el semáforo
-            semaforo.release()
-            break
-        else:
-            # Con el método put, encolamos el mensaje
-            colaMensajes.put(mens)
-            #Luego liberamos el semáforo
-            semaforo.release()
-
-def enviar():
-    while True:
-        #Adquirimos el semáforo
-        semaforo.acquire()
-        mensaje = colaMensajes.get()
-        if mensaje != "1":
-            obj.sendall(mensaje.encode('utf-8')) 
-        else:
-            obj.sendall(mensaje.encode('utf-8'))
-            
-            recibido = obj.recv(1024)
-            print("Ahora se presentaran los resultados en el siguiente orden: \n")
-            print("(Frase, Cantidad de Palabras) \n\n")
-            while(True):
-                if recibido.decode()[1]=="1" and recibido.decode()[2]==",":
-                    break
-                print(recibido.decode())
-                print()
-                #time.sleep(0.5)
-                recibido = obj.recv(1024)
-                   
-            print("Conexión cerrada")
-            break
-
-
 hiloLector = Thread(target=leer, args=())
 hiloEmisor = Thread(target=enviar, args=())
+hiloReceptor = Thread(target=recibir, args=())
 
 hiloLector.start()
 hiloEmisor.start()
+hiloReceptor.start()
 
 colaMensajes.join()

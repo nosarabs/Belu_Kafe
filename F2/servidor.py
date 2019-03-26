@@ -80,11 +80,12 @@ def recibir():
  
 def contador():
     global act
+    global delay
     while True:
         semaforo.acquire()
         h = my_lista[act]
         if h.getpalabra()=="1":
-           # time.sleep(1)
+            time.sleep(delay)
             cli.send(h.impForClient().encode('utf-8'))
             my_lista.pop(act)
             print("Conexión de la IP: " + str(addr[0]) + " Puerto: " + str(addr[1]) + " ha sido cerrada")
@@ -92,12 +93,13 @@ def contador():
         x = len(h.getpalabra().split())
         h.setcant(x)
         cli.send(h.impForClient().encode('utf-8'))
-        #time.sleep(1)
+        time.sleep(delay)
         act+=1
 
 my_lista=[]
 aceptar=True
-dip=""
+dip= ""
+delay=5
 if len(sys.argv) > 1:
     ip = str(sys.argv[1])
     regex = r"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b"
@@ -115,6 +117,8 @@ else:
     print("No ingresó argumentos: ")
     print("Debe ingresar ip del servidor")
     sys.exit(0)
+if len(sys.argv)>2:
+    delay = int(sys.argv[2])
 
 # instanciamos un objeto para trabajar con el socket
 ser = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -142,6 +146,7 @@ semaforo = threading.Semaphore(0)
 while aceptar:
     try:
         cli, addr = ser.accept()
+        print("Conexión de la IP: " + str(addr[0]) + " Puerto: " + str(addr[1]) + " ha sido exitosa")
     except:
         print("Error en Accept")
         sys.exit(0)
