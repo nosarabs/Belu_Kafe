@@ -146,10 +146,10 @@ while aceptar:
         print("Error en Accept")
         sys.exit(0)
 
-    hiloRecibidor = Thread(target=recibir, args=())
+    hiloReceptor = Thread(target=recibir, args=())
     hiloContador = Thread(target=contador, args=())
 
-    hiloRecibidor.start()
+    hiloReceptor.start()
     hiloContador.start()
 cli.close()
 ser.close()

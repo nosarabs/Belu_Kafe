@@ -88,9 +88,9 @@ def enviar():
 
 
 hiloLector = Thread(target=leer, args=())
-hiloEnviador = Thread(target=enviar, args=())
+hiloEmisor = Thread(target=enviar, args=())
 
 hiloLector.start()
-hiloEnviador.start()
+hiloEmisor.start()
 
 colaMensajes.join()
