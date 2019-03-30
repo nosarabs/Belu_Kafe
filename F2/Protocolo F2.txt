@@ -1,16 +1,16 @@
 PROTOCOLO FASE 2
 
 LECTOR
-- Lee la direccion de donde se encuentran las imagines que se las pasa el usuario. (Linea de comandos o entrada estandar).
-- Crea un contratista y le entrega la direccion de la imagen correspondiente.
+- Lee la dirección de donde se encuentran las imagenes que se las pasa el usuario. (Linea de comandos o entrada estándar).
+- Crea un contratista y le entrega la dirección de la imagen correspondiente.
 
 CONTRATISTA
-- Recibe la direccion del LECTOR
+- Recibe la dirección del LECTOR
 - Lee los primeros 512 bytes del archivo.
 - Particiona esos 512 bytes en 4 pedazos de 128 bytes. (Se puede hacer esto sin guardar los pedacitos en alguna ED?)
 - Crea encabezado para cada uno de los pedacitos de 128 bytes.
 - Empaqueta cada pedazo con su encabezado. (Todo este paquete es el que debe pesar 128 bytes, no solo cada pedazo de archivo)
-- Envia paquete por medio de un buzón de mensajes cada pedacito al EMISOR
+- Envía paquete por medio de un buzón de mensajes cada pedacito al EMISOR
 
 
 EMISOR
@@ -20,7 +20,7 @@ EMISOR
 - Envia paquete al RECEPTOR -> 2da Entrega
 ...
 - Recibe el mensaje del receptor que ya la foto X se termino de reconstruir
-- Indica al CONTRATISTA que tenia asignada la foto X que ya termino para que ya pueda morir
+- Indica al CONTRATISTA que tenía asignada la foto X, que ya termino, con esto el CONTRATISTA ya puede morir
   (No se si esto se comunica directamnete con los contratistas o por medio del Lector)
 
 RECEPTOR -> 2da Entrega
