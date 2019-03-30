@@ -1,0 +1,48 @@
+PROTOCOLO FASE 2
+
+LECTOR
+- Lee la direccion de donde se encuentran las imagines que se las pasa el usuario. (Linea de comandos o entrada estandar).
+- Crea un contratista y le entrega la direccion de la imagen correspondiente.
+
+CONTRATISTA
+- Recibe la direccion del LECTOR
+- Lee los primeros 512 bytes del archivo.
+- Particiona esos 512 bytes en 4 pedazos de 128 bytes. (Se puede hacer esto sin guardar los pedacitos en alguna ED?)
+- Crea encabezado para cada uno de los pedacitos de 128 bytes.
+- Empaqueta cada pedazo con su encabezado. (Todo este paquete es el que debe pesar 128 bytes, no solo cada pedazo de archivo)
+- Envia paquete por medio de un buzón de mensajes cada pedacito al EMISOR
+
+
+EMISOR
+- Recibe cada paquete de 128 bytes del CONTRATISTA
+- Desempaqueta y guarda en alguna ED el pedacito desempacado (Se necesita una para cada foto?) -> 1era Entrega
+- Recontruye la foto -> 1era Entrega
+- Envia paquete al RECEPTOR -> 2da Entrega
+...
+- Recibe el mensaje del receptor que ya la foto X se termino de reconstruir
+- Indica al CONTRATISTA que tenia asignada la foto X que ya termino para que ya pueda morir
+  (No se si esto se comunica directamnete con los contratistas o por medio del Lector)
+
+RECEPTOR -> 2da Entrega
+- Recibe cada paquete de 128 bytes
+- (
+  Aqui los hilos no se que hacen jaja
+  Cada hilo recoge un pedacito del buffer?
+  Cada hilo desempaqueta?
+  Para que un hilo coja un paquete tiene que saber de cual foto es
+  y para saber de cual foto es tiene que coger el paquete y leer el encabezado .-.
+  )
+- Cada hilo reconstruye la foto.
+- Cuando un hilo termine de reconstruir la foto, lo que sabra por alguna especificacion del encabezado del paquete,
+  el emisor debe avisar al receptor que la foto X ya terminó de ser reconstruida.
+
+
+FUNCIONES
+(No estoy muy segura en que clase va cada una porque no necesariamente cada proceso es una clase)
+
+leeDir();
+enviaDir();
+
+deconstruir();
+
+reconstruir();
