@@ -1,7 +1,7 @@
 #include "Lector.h"
 
 Lector::Lector(){
-
+    idParaContratista = 1;
 }
 
 Lector::~Lector(){
@@ -13,7 +13,7 @@ void Lector::obtenerDirectorio(){
     cin >> directorio;
 }
 
-void Lector::crearContratista(char * archivo, int id){
-   Contratista * contratista = new Contratista(archivo, id); // Crea al contratista, el id se debería manejar desde el main con un contador
-                                                            // para aumentarlo y que nunca se repeita a la hora de crear un contratista
+void Lector::crearContratista(){
+    Contratista * contratista = new Contratista(&directorio[0], idParaContratista); // Crea al contratista
+    idParaContratista++;
 }
