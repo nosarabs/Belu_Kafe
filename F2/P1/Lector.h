@@ -16,7 +16,7 @@ public:
     Lector(/* args */);
     virtual ~Lector();
     void obtenerDirectorio();
-    void crearContratista(/*Tenemos que definir como le vamos a pasar la dirección del directorio*/);
+    void crearContratista(char * archivo, int id);
 };
 
 #endif //LECTOR_H

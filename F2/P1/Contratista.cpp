@@ -1,21 +1,13 @@
 #include "Contratista.h"
 
-struct Paquete{
-  int id = this->id; //
-  int chunkNum; //numero de pedacito
-  char * chunk;
-};
-
 Contratista::Contratista(char * archivo, int id){
     this->archivo = archivo;
     this->id = id;
 }
 
 Contratista::~Contratista(){
-
+    
 }
-
-
 
 void Contratista::leerArchivo(){
     size_t b_size = 512;
@@ -89,5 +81,5 @@ void Contratista::empaquetar(char * archivo, int chunkNum){
 }
 
 void Contratista::enviarAlEmisor(Paquete paquete){
-
+    
 }

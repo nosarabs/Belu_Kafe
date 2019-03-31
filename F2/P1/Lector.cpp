@@ -13,6 +13,7 @@ void Lector::obtenerDirectorio(){
     cin >> directorio;
 }
 
-void Lector::crearContratista(/*La dirección de donde están las imágenes*/){
-
+void Lector::crearContratista(char * archivo, int id){
+   Contratista * contratista = new Contratista(archivo, id); // Crea al contratista, el id se debería manejar desde el main con un contador
+                                                            // para aumentarlo y que nunca se repeita a la hora de crear un contratista
 }
