@@ -6,11 +6,12 @@
 #include <fstream>
 using namespace std;
 
+struct Paquete;
+
 class Contratista
 {
 
 private:
-    /* data */
     char * archivo;
     int id;
 
@@ -21,6 +22,7 @@ public:
         char * chunk;
 
         Paquete(){};
+
 
         Paquete& operator=(const Paquete& orig) {
             id = orig.id;
