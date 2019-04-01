@@ -34,7 +34,7 @@ void Contratista::leerArchivo(){
 }
 
 
-void clean_buffer(char * &buffer, size_t size){
+void Contratista::clean_buffer(char * &buffer, size_t size){
     for(int index=0; index<size; ++index){
         buffer[index]=' ';
     }
@@ -70,13 +70,12 @@ void Contratista::particionarArchivo(char * archivo){
 }
 
 void Contratista::empaquetar(char * archivo, int chunkNum){
-  Paquete paquete = Paquete();
-  paquete.chunk = archivo;
-  paquete.chunkNum = chunkNum;
-
-  enviarAlEmisor(paquete);
+  buzonC.un_Mensaje.id_Contratista= this->id;
+  strcpy(buzonC.un_Mensaje.mensaje,archivo);
+  buzonC.un_Mensaje.chunk_Num = chunkNum;
+  enviarAlEmisor();
 }
 
-void Contratista::enviarAlEmisor(Paquete paquete){
-    
+void Contratista::enviarAlEmisor(){
+    buzonC.enviar_Mensaje(1); //un 1 como parametro porque los mensajes tipo 1 van a ser los que se envian de los contratistas
 }

@@ -16,11 +16,9 @@
         }
     }
     
-    void Buzon::enviar_Mensaje(long id, char * msj){
-        un_Mensaje.id_Mensaje = id;
-        strcpy(un_Mensaje.mensaje, msj);
+    void Buzon::enviar_Mensaje(long id){
         msgsnd (this->id_Cola, (struct msgbuf *)&un_Mensaje, 
-        sizeof(un_Mensaje.mensaje), IPC_NOWAIT);
+        sizeof(un_Mensaje.chunk_Num)+sizeof(un_Mensaje.id_Contratista)+sizeof(un_Mensaje.mensaje), IPC_NOWAIT);
     }
     
     void Buzon::recibir_Mensaje(long id){

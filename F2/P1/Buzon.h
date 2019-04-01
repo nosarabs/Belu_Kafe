@@ -13,6 +13,8 @@ using namespace std;
 typedef struct
 {
     long id_Mensaje;
+    int id_Contratista;
+    int chunk_Num;
     char mensaje[512];
 }mi_Mensaje;
 /*
@@ -22,8 +24,8 @@ class Buzon{
     private:
         key_t clave;
         int id_Cola;
-        mi_Mensaje un_Mensaje;
     public:
+        mi_Mensaje un_Mensaje;
         /*
          * constructor del Buzon 
          */
@@ -33,7 +35,7 @@ class Buzon{
          * es entre dos procesos necesito que el proceso 1 lea mensajes tipo 2
          * y el proceso 2 lea mensajes tipo 1 
          */
-        void enviar_Mensaje(long , char *);
+        void enviar_Mensaje(long);
         /*Recibe mensajes, el parametro long es para el tipo de mensajes
          * que deseo recibir, es decir, si soy proceso 1 recibo mensajes 
          * tipo 2, y si soy proceso 2 recibo mensajes tipo 1
