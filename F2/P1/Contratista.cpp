@@ -19,13 +19,10 @@ void Contratista::leerArchivo(){
         file.read(buffer, b_size);
         // se obtienen los bytes que se leyeron
         size_t count = file.gcount();
-        cout<<"count: "<<count<<endl;
         // si no se leyó nada termina
         if (!count){
             break;
         }
-        // se hace lo que se quiera con el buffer
-        cout<<buffer<<endl;
         //AQUII DEBERIA PARTIR EN PEDACITOS DE 128
         clean_buffer(buffer, b_size);
     }
