@@ -12,11 +12,12 @@ class Lector
 
 private:
     string directorio;
+    int idParaContratista;
 public:    
     Lector(/* args */);
     virtual ~Lector();
     void obtenerDirectorio();
-    void crearContratista(/*Tenemos que definir como le vamos a pasar la dirección del directorio*/);
+    void crearContratista();
 };
 
 #endif //LECTOR_H

@@ -1,7 +1,7 @@
 #include "Lector.h"
 
 Lector::Lector(){
-
+    idParaContratista = 1;
 }
 
 Lector::~Lector(){
@@ -13,6 +13,7 @@ void Lector::obtenerDirectorio(){
     cin >> directorio;
 }
 
-void Lector::crearContratista(/*La dirección de donde están las imágenes*/){
-
+void Lector::crearContratista(){
+    Contratista * contratista = new Contratista(&directorio[0], idParaContratista); // Crea al contratista
+    idParaContratista++;
 }
