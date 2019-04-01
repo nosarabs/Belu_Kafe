@@ -16,16 +16,16 @@
         }
     }
     
-    void Buzon::enviar_Mensaje(long id, char * msj){
+    void Buzon::enviar_Mensaje(long id, char * encabezado, char * msj){
         un_Mensaje.id_Mensaje = id;
         strcpy(un_Mensaje.mensaje, msj);
         msgsnd (this->id_Cola, (struct msgbuf *)&un_Mensaje, 
-        sizeof(un_Mensaje.mensaje), IPC_NOWAIT);
+        sizeof(un_Mensaje.mensaje)+sizeof(encabezado), IPC_NOWAIT);
     }
     
     void Buzon::recibir_Mensaje(long id){
         msgrcv (this->id_Cola, (struct msgbuf *)&un_Mensaje,
-        sizeof(un_Mensaje.mensaje), id, 0);
+        sizeof(un_Mensaje.mensaje)+sizeof(encabezado), id, 0);
         cout << "Recibido mensaje tipo "<< id<< endl;
         cout << "Mensaje = " << un_Mensaje.mensaje << endl;
     }

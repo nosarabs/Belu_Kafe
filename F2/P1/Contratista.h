@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "Buzon.h"
 using namespace std;
 
 struct Paquete;
@@ -14,6 +15,7 @@ class Contratista
 private:
     char * archivo;
     int id;
+    Buzon buzon;
 
 public:
     struct Paquete{

@@ -2,6 +2,10 @@
 #define EMISOR_h
 
 #include <string>
+#include <list>
+#include <queue>
+#include "Buzon.h"
+using namespace std;
 
 using namespace std;
 
@@ -9,7 +13,8 @@ class Emisor
 {
 
 private:
-    /* data */
+    Buzon buzon;
+    list< queue < char * > > archivos;
 public:    
     Emisor(/* args */);
     virtual ~Emisor();

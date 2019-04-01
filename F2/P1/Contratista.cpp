@@ -1,5 +1,5 @@
 #include "Contratista.h"
-
+#include "Buzon.h"
 Contratista::Contratista(char * archivo, int id){
     this->archivo = archivo;
     this->id = id;
@@ -78,5 +78,6 @@ void Contratista::empaquetar(char * archivo, int chunkNum){
 }
 
 void Contratista::enviarAlEmisor(Paquete paquete){
-    
+    char * encabezado = {static_cast<char>(this->id), static_cast<char>(paquete.chunkNum), '\0'}
+    buzon.enviarAlEmisor(1, encabezado, paquete.chunk);
 }
