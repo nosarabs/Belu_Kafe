@@ -29,15 +29,17 @@ int Lector::obtenerDirectorio(char *path){
 			if ( *entry->d_name == '.' )
 				continue;
 
-		}
+		}else{
 		 // agregar el directorio al path
             char relative_path[PATH_MAX];
             sprintf(relative_path, "%s/%s", path, entry->d_name);
             if (!fork()) {
               crearContratista(&relative_path[0], idParaContratista);
+              cout<<"lector creo a contratista"<<endl;
             } else {
               ++idParaContratista;
             }
+        }
 
 	}
 

@@ -3,6 +3,7 @@
 Contratista::Contratista(char * archivo, int id){
     this->archivo = archivo;
     this->id = id;
+    cout<<"creo contratista"<<endl;
     buzonC.enviar_Mensaje(10000); //señal que se creo un contratista
 }
 
@@ -11,6 +12,7 @@ Contratista::~Contratista(){
 }
 
 void Contratista::leerArchivo(){
+    cout<<"leo el sms"<<endl;
     size_t b_size = 512;
     char * buffer = new char[b_size];
     ifstream file(this->archivo, ios::binary );
@@ -45,7 +47,7 @@ void Contratista::particionarArchivo(char * archivo){
   int chunkNum = 0;
   size_t b_size = 128;
   char *buffer = new char[b_size];
-  ifstream file(archivo, ios::binary );
+  /*ifstream file(archivo, ios::binary );
   clean_buffer(buffer, b_size);
   while (file)
   {
@@ -64,13 +66,14 @@ void Contratista::particionarArchivo(char * archivo){
       empaquetar(buffer,chunkNum);
       ++chunkNum;
       clean_buffer(buffer, b_size);
-  }
+  }*/
   file.close();
   delete[] buffer;
 
 }
 
 void Contratista::empaquetar(char * archivo, int chunkNum){
+    cout<<"empaqueto"<<endl;
   strcpy(buzonC.un_Mensaje.mensaje,archivo);
   buzonC.un_Mensaje.chunk_Num = chunkNum;
   if(archivo[127] == ' ' || archivo[127] == NULL){
@@ -82,5 +85,6 @@ void Contratista::empaquetar(char * archivo, int chunkNum){
 }
 
 void Contratista::enviarAlEmisor(){
+    cout<<"envio sms"<<endl;
     buzonC.enviar_Mensaje(this->id); //un 1 como parametro porque los mensajes tipo 1 van a ser los que se envian de los contratistas
 }
