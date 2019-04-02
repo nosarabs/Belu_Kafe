@@ -1,4 +1,6 @@
 #include "Lector.h"
+#include <unistd.h>
+
 
 Lector::Lector(){
     idParaContratista = 1;
@@ -31,22 +33,20 @@ int Lector::obtenerDirectorio(char *path){
 		 // agregar el directorio al path
             char relative_path[PATH_MAX];
             sprintf(relative_path, "%s/%s", path, entry->d_name);
-            directorios.push_back(relative_path);
+            if (!fork()) {
+              crearContratista(&relative_path[0], idParaContratista);
+            } else {
+              ++idParaContratista;
+            }
+
 	}
-	/*esta impresion prueba que se estan leyendo los archivos del directorio, se podria crear otro hilo 
-     * que saque archivos del vector de directorios mientras exista la direccion actual controlada por semaforos, este hilo puede ser hecho en pthreads
-     * o bien esperar que se lean las imagenes del directorio y luego empezar a crear contratistas. Existe un problema al crear contratistas con fork() 
-     * pues necesitamos que sea de memoria compartida el vector de archivos y tambien el idParaContratista.
-     */
-	for(int i=0; i<directorios.size();++i)
-        cout<<directorios[i]<<endl;
 
 	// Sucess
 	closedir(dir);
+  return 0;
 }
 
 void Lector::crearContratista(char *  directorio, int idParaContratista){
     Contratista * contratista = new Contratista(directorio, idParaContratista); // Crea al contratista
     contratista->leerArchivo();
-    contratista->~Contratista();
 }
