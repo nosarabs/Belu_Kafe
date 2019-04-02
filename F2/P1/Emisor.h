@@ -1,8 +1,11 @@
 #ifndef EMISOR_h
 #define EMISOR_h
 
-#include <string>
 #include "Buzon.h"
+#include <string>
+#include <pthread.h>
+#include <fstream>
+
 using namespace std;
 
 class Emisor
@@ -11,6 +14,8 @@ class Emisor
 private:
     /* data */
     Buzon buzonE;
+    pthread_t thread;
+    size_t hilosConstruidos = 1;
 public:    
     Emisor(/* args */);
     virtual ~Emisor();
@@ -23,6 +28,7 @@ public:
     void Desempaquetar();
     void Guardar(); // en alguna ED conforme se va desempaquetando
     void ReconstruirArchivo();
+    void* hiloArchivo(void * data);
 };
 
 #endif //EMISOR_h

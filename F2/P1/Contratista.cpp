@@ -73,6 +73,11 @@ void Contratista::empaquetar(char * archivo, int chunkNum){
   buzonC.un_Mensaje.id_Contratista= this->id;
   strcpy(buzonC.un_Mensaje.mensaje,archivo);
   buzonC.un_Mensaje.chunk_Num = chunkNum;
+  if(archivo[127] == ' ' || archivo[127] == NULL){
+    buzonC.un_Mensaje.fin = true;
+  }else{
+    buzonC.un_Mensaje.fin = false;
+  }
   enviarAlEmisor();
 }
 
