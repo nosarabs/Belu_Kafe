@@ -42,10 +42,11 @@ public:
         cout<<"cree archivo"<<endl;
         do{
             dt->mi_buzon->recibir_Mensaje(dt->id);
-            destino.write(dt->mi_buzon->un_Mensaje.mensaje, strlen(dt->mi_buzon->un_Mensaje.mensaje));
-        }while(true);
+            if(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0)
+                destino.write(dt->mi_buzon->un_Mensaje.mensaje, strlen(dt->mi_buzon->un_Mensaje.mensaje));
+        }while(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0);
         
-        cout<<"terminee"<<endl;
+        cout<<"terminee soy el hilo "<<this->id<<endl;
         dt->mi_buzon->enviar_Mensaje(90000+dt->id,"Terminee");
         return NULL;
     }
