@@ -13,7 +13,7 @@ class Contratista
 private:
     char * archivo;
     int id;
-    Buzon buzonC;
+    Buzon * buzonC;
 
 public:
     

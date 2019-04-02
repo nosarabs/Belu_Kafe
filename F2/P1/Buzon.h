@@ -36,7 +36,7 @@ class Buzon{
          * es entre dos procesos necesito que el proceso 1 lea mensajes tipo 2
          * y el proceso 2 lea mensajes tipo 1
          */
-        void enviar_Mensaje(long);
+        void enviar_Mensaje(long, char *);
         /*Recibe mensajes, el parametro long es para el tipo de mensajes
          * que deseo recibir, es decir, si soy proceso 1 recibo mensajes
          * tipo 2, y si soy proceso 2 recibo mensajes tipo 1

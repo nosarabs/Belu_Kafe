@@ -12,7 +12,7 @@ Lector::~Lector(){
 }
 
 int Lector::obtenerDirectorio(char *path){
-	DIR* dir = opendir(path);
+    DIR* dir = opendir(path);
 
     if ( dir == NULL ){
 		cout<<"error: no se pudo abrir el directorio"<<endl;
@@ -35,7 +35,6 @@ int Lector::obtenerDirectorio(char *path){
             sprintf(relative_path, "%s/%s", path, entry->d_name);
             if (!fork()) {
               crearContratista(&relative_path[0], idParaContratista);
-              cout<<"lector creo a contratista"<<endl;
             } else {
               ++idParaContratista;
             }
@@ -45,7 +44,7 @@ int Lector::obtenerDirectorio(char *path){
 
 	// Sucess
 	closedir(dir);
-  return 0;
+    return 0;
 }
 
 void Lector::crearContratista(char *  directorio, int idParaContratista){
