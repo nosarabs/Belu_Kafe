@@ -12,6 +12,7 @@ Lector::~Lector(){
 }
 
 int Lector::obtenerDirectorio(char *path){
+    Buzon * buzon= new Buzon();
     DIR* dir = opendir(path);
 
     if ( dir == NULL ){
@@ -41,7 +42,10 @@ int Lector::obtenerDirectorio(char *path){
         }
 
 	}
-
+    while(idParaContratista==0){
+        buzon->recibir_Mensaje(9999);
+        --idParaContratista;
+    }
 	// Sucess
 	closedir(dir);
     return 0;

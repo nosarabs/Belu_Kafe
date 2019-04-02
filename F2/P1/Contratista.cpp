@@ -33,6 +33,7 @@ void Contratista::leerArchivo(){
     }
     file.close();
     buzonC->recibir_Mensaje(90000+this->id);
+    buzonC->enviar_Mensaje(9999, "un contratista terminoo");
     delete[] buffer;
 }
 
@@ -48,14 +49,18 @@ void Contratista::particionarArchivo(char * archivo){
   size_t b_size = 128;
   char *buffer = new char[b_size];
   int actual=0;
+  int siguiente=128;
   for(int i=0; i<4;++i){
-      for(int j=actual;j<128;++j){
-          buffer[j]=archivo[j];
+      int index=0;
+      for(int j=actual;j<siguiente;++j){
+          buffer[index]=archivo[j];
+          ++index;
         }
         empaquetar(buffer,chunkNum);
         ++chunkNum;
         clean_buffer(buffer, b_size);
         actual+=128;
+        siguiente+=128;
     }
   //file.close();
   delete[] buffer;

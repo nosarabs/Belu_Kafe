@@ -38,14 +38,14 @@ public:
     static void* hiloArchivo(void* data){
         mi_data * dt = (mi_data *)data;
         string cadena= "nuevo" + to_string(dt->id) + ".jpg";
-        cout<<"cadena: "<<cadena<<endl;
         ofstream destino(cadena,ios::binary);
         cout<<"cree archivo"<<endl;
         do{
             dt->mi_buzon->recibir_Mensaje(dt->id);
             destino.write(dt->mi_buzon->un_Mensaje.mensaje, strlen(dt->mi_buzon->un_Mensaje.mensaje));
-        } while (!dt->mi_buzon->un_Mensaje.fin);
+        }while(true);
         
+        cout<<"terminee"<<endl;
         dt->mi_buzon->enviar_Mensaje(90000+dt->id,"Terminee");
         return NULL;
     }
