@@ -2,6 +2,7 @@
 #define CONTRATISTA_H
 
 #include <string>
+#include <string.h>
 #include <iostream>
 #include <fstream>
 #include "Buzon.h"
@@ -26,7 +27,7 @@ public:
      * Método de recibe el buffer de 512 y lo particiona en 
      * pedacitos de 128 en 128
      */
-    void particionarArchivo(char * archivo);
+    void particionarArchivo(char * archivo, int);
     /*
      * Método que utiliza el struct "mi_mensaje" del mensaje de buzon para 
      * generar el paquete  

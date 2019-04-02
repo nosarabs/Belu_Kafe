@@ -24,7 +24,7 @@ void Emisor::Recibir(){
     //}
      for(int i=0; i<thread.size();++i)   
         pthread_join(thread[i], NULL);
-    
+    delete buzonC;
 }
 
 void Emisor::Desempaquetar(){

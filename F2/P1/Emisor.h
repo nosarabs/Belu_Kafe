@@ -37,7 +37,7 @@ public:
     
     static void* hiloArchivo(void* data){
         mi_data * dt = (mi_data *)data;
-        string cadena= "nuevo" + to_string(dt->id) + ".jpg";
+        string cadena= "nuevo" + to_string(dt->id) + ".txt";
         ofstream destino(cadena,ios::binary);
         cout<<"cree archivo"<<endl;
         do{
@@ -46,7 +46,7 @@ public:
                 destino.write(dt->mi_buzon->un_Mensaje.mensaje, strlen(dt->mi_buzon->un_Mensaje.mensaje));
         }while(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0);
         
-        cout<<"terminee soy el hilo "<<this->id<<endl;
+        cout<<"terminee soy el hilo "<<dt->id<<endl;
         dt->mi_buzon->enviar_Mensaje(90000+dt->id,"Terminee");
         return NULL;
     }
