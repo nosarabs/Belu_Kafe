@@ -13,13 +13,13 @@ using namespace std;
 typedef struct
 {
     long id_Mensaje;
-    int id_Contratista;
     int chunk_Num;
     char mensaje[128];
+    int id_Contratista;
     bool fin;
 }mi_Mensaje;
 /*
- *Clase Buzon para establecer la comunicacion entre procesos 
+ *Clase Buzon para establecer la comunicacion entre procesos
  */
 class Buzon{
     private:
@@ -28,17 +28,17 @@ class Buzon{
     public:
         mi_Mensaje un_Mensaje;
         /*
-         * constructor del Buzon 
+         * constructor del Buzon
          */
         Buzon();
         /*
          * Envia un mensaje el long es un dentificador del mensaje es decir si la comunicacion
          * es entre dos procesos necesito que el proceso 1 lea mensajes tipo 2
-         * y el proceso 2 lea mensajes tipo 1 
+         * y el proceso 2 lea mensajes tipo 1
          */
         void enviar_Mensaje(long);
         /*Recibe mensajes, el parametro long es para el tipo de mensajes
-         * que deseo recibir, es decir, si soy proceso 1 recibo mensajes 
+         * que deseo recibir, es decir, si soy proceso 1 recibo mensajes
          * tipo 2, y si soy proceso 2 recibo mensajes tipo 1
          */
         void recibir_Mensaje(long);

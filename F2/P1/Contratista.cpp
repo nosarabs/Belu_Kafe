@@ -3,10 +3,11 @@
 Contratista::Contratista(char * archivo, int id){
     this->archivo = archivo;
     this->id = id;
+    buzonC.enviar_Mensaje(10000); //señal que se creo un contratista
 }
 
 Contratista::~Contratista(){
-    
+
 }
 
 void Contratista::leerArchivo(){
@@ -70,7 +71,6 @@ void Contratista::particionarArchivo(char * archivo){
 }
 
 void Contratista::empaquetar(char * archivo, int chunkNum){
-  buzonC.un_Mensaje.id_Contratista= this->id;
   strcpy(buzonC.un_Mensaje.mensaje,archivo);
   buzonC.un_Mensaje.chunk_Num = chunkNum;
   if(archivo[127] == ' ' || archivo[127] == NULL){
@@ -82,5 +82,5 @@ void Contratista::empaquetar(char * archivo, int chunkNum){
 }
 
 void Contratista::enviarAlEmisor(){
-    buzonC.enviar_Mensaje(1); //un 1 como parametro porque los mensajes tipo 1 van a ser los que se envian de los contratistas
+    buzonC.enviar_Mensaje(this->id); //un 1 como parametro porque los mensajes tipo 1 van a ser los que se envian de los contratistas
 }
