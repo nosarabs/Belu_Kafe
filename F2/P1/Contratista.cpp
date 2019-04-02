@@ -30,8 +30,9 @@ void Contratista::leerArchivo(){
     file.close();
     buzonC->enviar_Mensaje(this->id, "FIN");
     buzonC->recibir_Mensaje(90000+this->id);
-    //buzonC->enviar_Mensaje(9999, "un contratista terminoo");
     delete buzonC;
+    //buzonC->enviar_Mensaje(9999, "un contratista terminoo");
+    //delete buzonC;
     delete[] buffer;
 }
 

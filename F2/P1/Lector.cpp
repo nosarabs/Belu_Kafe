@@ -47,7 +47,7 @@ int Lector::obtenerDirectorio(char *path){
         --idParaContratista;
     }
 	// Sucess
-	delete buzon;
+	//delete buzon;
 	closedir(dir);
     return 0;
 }

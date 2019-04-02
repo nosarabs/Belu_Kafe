@@ -37,7 +37,7 @@ public:
     
     static void* hiloArchivo(void* data){
         mi_data * dt = (mi_data *)data;
-        string cadena= "nuevo" + to_string(dt->id) + ".txt";
+        string cadena= "nuevo" + to_string(dt->id) + ".jpg";
         ofstream destino(cadena,ios::binary);
         cout<<"cree archivo"<<endl;
         do{
