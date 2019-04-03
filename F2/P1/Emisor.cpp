@@ -2,7 +2,7 @@
 
 Emisor::Emisor(){
     hilosConstruidos=1;
-    buzonC= new Buzon();
+    this->buzonC= new Buzon();
 }
 
 Emisor::~Emisor(){
@@ -12,12 +12,12 @@ Emisor::~Emisor(){
 void Emisor::Recibir(){
     cout<<"creado emisor"<<endl;
    // while(true){
-        buzonC->recibir_Mensaje(10000);
+        this->buzonC->recibir_Mensaje(10000);
         cout<<"creare hilo"<<endl;
         pthread_t newthread;
         mi_data data;
         data.id=hilosConstruidos;
-        data.mi_buzon=buzonC;
+        data.mi_buzon=this->buzonC;
         thread.push_back(newthread);
         pthread_create(&thread[hilosConstruidos-1], NULL, &Emisor::hiloArchivo, (void*)&data);
         ++hilosConstruidos;

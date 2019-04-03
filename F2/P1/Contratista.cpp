@@ -3,7 +3,7 @@
 Contratista::Contratista(char * archivo, int id){
     this->archivo = archivo;
     this->id = id;
-    buzonC=new Buzon();
+    this->buzonC=new Buzon();
 }
 
 Contratista::~Contratista(){
@@ -22,14 +22,17 @@ void Contratista::leerArchivo(){
         file.read(buffer, b_size);
         // se obtienen los bytes que se leyeron
         size_t count = file.gcount();
+        if(!count){
+            break;
+        }
         //AQUII DEBERIA PARTIR EN PEDACITOS DE 128
         particionarArchivo(buffer, count);
 
         clean_buffer(buffer, b_size);
     }
     file.close();
-    buzonC->enviar_Mensaje(this->id, "FIN");
-    buzonC->recibir_Mensaje(90000+this->id);
+    this->buzonC->enviar_Mensaje(this->id, "FIN");
+    this->buzonC->recibir_Mensaje(90000+this->id);
     delete buzonC;
     //buzonC->enviar_Mensaje(9999, "un contratista terminoo");
     //delete buzonC;
@@ -58,7 +61,9 @@ void Contratista::particionarArchivo(char * archivo, int count){
 		if(count < 128){
 			char * bufferPeq = new char[count];
 			memcpy((void *)bufferPeq, (void *)archivo, count);
-			empaquetar(bufferPeq, chunkNum);		
+			empaquetar(bufferPeq, chunkNum);
+            delete[] bufferPeq;
+            count=0;
 		}else{
 			memcpy((void *)buffer, (void *)archivo, b_size);
 			empaquetar(buffer, chunkNum++);
@@ -73,11 +78,11 @@ void Contratista::particionarArchivo(char * archivo, int count){
 }
 
 void Contratista::empaquetar(char * archivo, int chunkNum){
-  strcpy(buzonC->un_Mensaje.mensaje,archivo);
-  buzonC->un_Mensaje.chunk_Num = chunkNum;
+  strcpy(this->buzonC->un_Mensaje.mensaje,archivo);
+  this->buzonC->un_Mensaje.chunk_Num = chunkNum;
   enviarAlEmisor();
 }
 
 void Contratista::enviarAlEmisor(){
-    buzonC->enviar_Mensaje(this->id,buzonC->un_Mensaje.mensaje); //un 1 como parametro porque los mensajes tipo 1 van a ser los que se envian de los contratistas
+    buzonC->enviar_Mensaje(this->id,this->buzonC->un_Mensaje.mensaje); //un 1 como parametro porque los mensajes tipo 1 van a ser los que se envian de los contratistas
 }

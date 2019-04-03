@@ -1,7 +1,7 @@
 #include "Buzon.h"
 
     Buzon::Buzon(){
-        this->clave = ftok ("/bin/ls", 33);
+        this->clave = 0xB70442;
         if (this->clave == (key_t)-1)
         {
             cout << "Error al obtener clave para cola mensajes" << endl;
@@ -20,7 +20,7 @@
         un_Mensaje.id_Mensaje = id;
         strcpy(un_Mensaje.mensaje, msj);
         msgsnd (this->id_Cola, (struct msgbuf *)&un_Mensaje, 
-        sizeof(un_Mensaje.chunk_Num)+sizeof(un_Mensaje.mensaje)+sizeof(un_Mensaje.id_Contratista)+sizeof(un_Mensaje.fin),0);
+        sizeof(un_Mensaje.chunk_Num)+sizeof(un_Mensaje.mensaje)+sizeof(un_Mensaje.id_Contratista)+sizeof(un_Mensaje.fin), 0);
     }
 
     void Buzon::recibir_Mensaje(long id){
