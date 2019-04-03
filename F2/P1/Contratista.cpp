@@ -11,30 +11,27 @@ Contratista::~Contratista(){
 }
 
 void Contratista::leerArchivo(){
-    buzonC->enviar_Mensaje(10000,"listo Creado contratista"); //señal que se creo un contratista
+    buzonC->enviar_Mensaje(10000,""); //señal que se creo un contratista
     size_t b_size = 512;
     char * buffer = new char[b_size];
-    ifstream file(this->archivo, ios::binary );
+    int var= open(this->archivo, O_RDONLY );
     clean_buffer(buffer, b_size);
-    while (file)
+    size_t count=0;
+    size_t acum = 0;
+    while (count = read(var,buffer,b_size))
     {
-        // lee el segmento de información
-        file.read(buffer, b_size);
-        // se obtienen los bytes que se leyeron
-        size_t count = file.gcount();
-        if(!count){
-            break;
-        }
-        //AQUII DEBERIA PARTIR EN PEDACITOS DE 128
+	
         particionarArchivo(buffer, count);
 
-        clean_buffer(buffer, b_size);
+        //clean_buffer(buffer, b_size);
     }
-    file.close();
-    this->buzonC->enviar_Mensaje(this->id, "FIN");
+    //file.close();
+    strcpy(this->buzonC->un_Mensaje.mensaje,"FIN");
+    this->buzonC->enviar_Mensaje(this->id, this->buzonC->un_Mensaje.mensaje);
     this->buzonC->recibir_Mensaje(90000+this->id);
     delete buzonC;
-    //buzonC->enviar_Mensaje(9999, "un contratista terminoo");
+    strcpy(this->buzonC->un_Mensaje.mensaje,"un contratista terminoo");
+    buzonC->enviar_Mensaje(9999, this->buzonC->un_Mensaje.mensaje);
     //delete buzonC;
     delete[] buffer;
 }
@@ -53,7 +50,8 @@ void Contratista::particionarArchivo(char * archivo, int count){
   if(count == 512){
 	  for(int i=0; i<4;++i){
 		memcpy((void *)buffer, (void *)archivo, b_size);
-		empaquetar(buffer, chunkNum++);
+		buzonC->un_Mensaje.chunk_Num = b_size;
+		empaquetar(buffer, b_size);
 		archivo+=128;
 	  }
   }else{
@@ -61,12 +59,14 @@ void Contratista::particionarArchivo(char * archivo, int count){
 		if(count < 128){
 			char * bufferPeq = new char[count];
 			memcpy((void *)bufferPeq, (void *)archivo, count);
-			empaquetar(bufferPeq, chunkNum);
+			buzonC->un_Mensaje.chunk_Num = count;
+			empaquetar(bufferPeq, count);
             delete[] bufferPeq;
             count=0;
 		}else{
 			memcpy((void *)buffer, (void *)archivo, b_size);
-			empaquetar(buffer, chunkNum++);
+			buzonC->un_Mensaje.chunk_Num = b_size;
+			empaquetar(buffer, b_size);
 			archivo+=128;
 			count -= 128;
 		}
@@ -78,7 +78,7 @@ void Contratista::particionarArchivo(char * archivo, int count){
 }
 
 void Contratista::empaquetar(char * archivo, int chunkNum){
-  strcpy(this->buzonC->un_Mensaje.mensaje,archivo);
+  memcpy(this->buzonC->un_Mensaje.mensaje,archivo, chunkNum);
   this->buzonC->un_Mensaje.chunk_Num = chunkNum;
   enviarAlEmisor();
 }

@@ -35,17 +35,18 @@ int Lector::obtenerDirectorio(char *path){
             char relative_path[PATH_MAX];
             sprintf(relative_path, "%s/%s", path, entry->d_name);
             if (!fork()) {
-              crearContratista(&relative_path[0], idParaContratista);
+	      cout<<"un archivo"<<endl;
+              //crearContratista(&relative_path[0], idParaContratista);
             } else {
               ++idParaContratista;
             }
         }
 
 	}
-    while(idParaContratista==0){
+    /*while(idParaContratista==0){
         buzon->recibir_Mensaje(9999);
         --idParaContratista;
-    }
+    }*/
 	// Sucess
 	//delete buzon;
 	closedir(dir);

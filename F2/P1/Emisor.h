@@ -2,6 +2,9 @@
 #define EMISOR_h
 
 #include "Buzon.h"
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <string>
 #include <pthread.h>
 #include <fstream>
@@ -38,15 +41,18 @@ public:
     static void* hiloArchivo(void* data){
         mi_data * dt = (mi_data *)data;
         //dt->mi_buzon=new Buzon();
-        string cadena= "nuevo" + to_string(dt->id) + ".txt";
-        ofstream destino(cadena,ios::binary);
+        string cadena= "nuevo" + to_string(dt->id) + ".png";
+        //ofstream destino(cadena,ios::binary);
+	int id = open( cadena.data(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR );
         cout<<"cree archivo"<<endl;
         do{
             dt->mi_buzon->recibir_Mensaje(dt->id);
-            if(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0)
-                destino.write(dt->mi_buzon->un_Mensaje.mensaje, strlen(dt->mi_buzon->un_Mensaje.mensaje));
+            if(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0){
+                write( id, dt->mi_buzon->un_Mensaje.mensaje, dt->mi_buzon->un_Mensaje.chunk_Num);
+		cout<<dt->mi_buzon->un_Mensaje.mensaje<<endl;
+	     }
         }while(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0);
-        
+
         cout<<"terminee soy el hilo "<<dt->id<<endl;
         dt->mi_buzon->enviar_Mensaje(90000+dt->id,"Terminee");
         return NULL;

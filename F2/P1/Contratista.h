@@ -6,6 +6,9 @@
 #include <iostream>
 #include <fstream>
 #include "Buzon.h"
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
 using namespace std;
 
 class Contratista

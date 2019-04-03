@@ -11,7 +11,7 @@ Emisor::~Emisor(){
 
 void Emisor::Recibir(){
     cout<<"creado emisor"<<endl;
-   // while(true){
+   //while(true){
         this->buzonC->recibir_Mensaje(10000);
         cout<<"creare hilo"<<endl;
         pthread_t newthread;
