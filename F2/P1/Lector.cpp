@@ -35,10 +35,9 @@ int Lector::obtenerDirectorio(char *path){
             char relative_path[PATH_MAX];
             sprintf(relative_path, "%s/%s", path, entry->d_name);
             if (!fork()) {
-	      cout<<"un archivo"<<endl;
-              //crearContratista(&relative_path[0], idParaContratista);
+                crearContratista(&relative_path[idParaContratista-1], idParaContratista);
             } else {
-              ++idParaContratista;
+                ++idParaContratista;
             }
         }
 
@@ -48,12 +47,13 @@ int Lector::obtenerDirectorio(char *path){
         --idParaContratista;
     }*/
 	// Sucess
-	//delete buzon;
+	delete buzon;
 	closedir(dir);
     return 0;
 }
 
 void Lector::crearContratista(char *  directorio, int idParaContratista){
+    cout<< "Abri archivo " <<  idParaContratista << directorio << endl;
     Contratista * contratista = new Contratista(directorio, idParaContratista); // Crea al contratista
     contratista->leerArchivo();
 }

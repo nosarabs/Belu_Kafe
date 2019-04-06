@@ -14,23 +14,22 @@ void Contratista::leerArchivo(){
     buzonC->enviar_Mensaje(10000,""); //señal que se creo un contratista
     size_t b_size = 512;
     char * buffer = new char[b_size];
-    int var= open(this->archivo, O_RDONLY );
+    int file = open(this->archivo, O_RDONLY );
     clean_buffer(buffer, b_size);
     size_t count=0;
     size_t acum = 0;
-    while (count = read(var,buffer,b_size))
-    {
-	
+    while (count = read(file, buffer, b_size))
+    { 
         particionarArchivo(buffer, count);
 
         //clean_buffer(buffer, b_size);
     }
-    //file.close();
+    cout << "Terminé de leer archivo" << this->id << endl;
     strcpy(this->buzonC->un_Mensaje.mensaje,"FIN");
     this->buzonC->enviar_Mensaje(this->id, this->buzonC->un_Mensaje.mensaje);
     this->buzonC->recibir_Mensaje(90000+this->id);
-    delete buzonC;
-    strcpy(this->buzonC->un_Mensaje.mensaje,"un contratista terminoo");
+    //delete buzonC;
+    strcpy(this->buzonC->un_Mensaje.mensaje,"");
     buzonC->enviar_Mensaje(9999, this->buzonC->un_Mensaje.mensaje);
     //delete buzonC;
     delete[] buffer;
@@ -84,5 +83,5 @@ void Contratista::empaquetar(char * archivo, int chunkNum){
 }
 
 void Contratista::enviarAlEmisor(){
-    buzonC->enviar_Mensaje(this->id,this->buzonC->un_Mensaje.mensaje); //un 1 como parametro porque los mensajes tipo 1 van a ser los que se envian de los contratistas
+    buzonC->enviar_Mensaje(this->id,this->buzonC->un_Mensaje.mensaje);
 }

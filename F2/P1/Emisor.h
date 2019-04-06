@@ -34,27 +34,19 @@ public:
     void Recibir();
     /*
      */
-    void Desempaquetar();
-    void Guardar(); // en alguna ED conforme se va desempaquetando
-    void ReconstruirArchivo();
     
     static void* hiloArchivo(void* data){
         mi_data * dt = (mi_data *)data;
-        //dt->mi_buzon=new Buzon();
-        string cadena= "nuevo" + to_string(dt->id) + ".png";
-        //ofstream destino(cadena,ios::binary);
-	int id = open( cadena.data(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR );
-        cout<<"cree archivo"<<endl;
+        string cadena = "nuevo" + to_string(dt->id) + ".jpg";
+	    int id = open( cadena.data(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR );
+        cout << "Cree archivo " << dt->id << endl;
         do{
             dt->mi_buzon->recibir_Mensaje(dt->id);
             if(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0){
                 write( id, dt->mi_buzon->un_Mensaje.mensaje, dt->mi_buzon->un_Mensaje.chunk_Num);
-		cout<<dt->mi_buzon->un_Mensaje.mensaje<<endl;
 	     }
         }while(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0);
-
-        cout<<"terminee soy el hilo "<<dt->id<<endl;
-        dt->mi_buzon->enviar_Mensaje(90000+dt->id,"Terminee");
+        dt->mi_buzon->enviar_Mensaje(90000+dt->id,"");
         return NULL;
     }
     
