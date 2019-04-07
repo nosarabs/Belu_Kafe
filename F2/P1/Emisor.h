@@ -39,19 +39,18 @@ public:
         mi_data * dt=new mi_data;
         dt->id =(size_t)data;
         dt->mi_buzon=new Buzon();
-        cout<<"dt: "<<dt->id<<endl;
         string cadena = "nuevo" + to_string(dt->id) + ".jpg";
 	    int id = open( cadena.data(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR );
-        cout << "Cree archivo " << dt->id << endl;
-        dt->mi_buzon->enviar_Mensaje(100+dt->id,"");
+        strcpy(dt->mi_buzon->un_Mensaje.mensaje,"");
+        dt->mi_buzon->enviar_Mensaje(100+dt->id, dt->mi_buzon->un_Mensaje.mensaje);
         do{
             dt->mi_buzon->recibir_Mensaje(dt->id);
             if(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0){
                 write( id, dt->mi_buzon->un_Mensaje.mensaje, dt->mi_buzon->un_Mensaje.chunk_Num);
 	     }
         }while(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0);
-        cout<<"Termine de escribir archivo soy hilo "<<dt->id<<endl;
-        //dt->mi_buzon->enviar_Mensaje(90000+dt->id,"");
+        strcpy(dt->mi_buzon->un_Mensaje.mensaje,"");
+        dt->mi_buzon->enviar_Mensaje(90000+dt->id, dt->mi_buzon->un_Mensaje.mensaje);
         return NULL;
     }
     

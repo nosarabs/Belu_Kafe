@@ -16,6 +16,7 @@ class Lector
 private:
     string directorio;
     int idParaContratista;
+    int contratistasActuales;
     vector<string> directorios;
     int actual;
 public:    

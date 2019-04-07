@@ -5,6 +5,7 @@
 Lector::Lector(){
     idParaContratista = 1;
     actual=0;
+    contratistasActuales = 0;
 }
 
 Lector::~Lector(){
@@ -32,6 +33,10 @@ int Lector::obtenerDirectorio(char *&path){
  
 
 		}else{
+            if(contratistasActuales >= 2){
+                buzon->recibir_Mensaje(9999);
+                --contratistasActuales;
+            }
 		 // agregar el directorio al pat
             char relative_path[PATH_MAX];
             sprintf(relative_path, "%s/%s",path, entry->d_name);
@@ -39,23 +44,21 @@ int Lector::obtenerDirectorio(char *&path){
                 crearContratista(&relative_path[0], idParaContratista);
                 return 0;
             } else {
+                ++contratistasActuales;
                 ++idParaContratista;
             }
         }
-
 	}
-    /*while(idParaContratista!=0){
+    while(contratistasActuales!=0){
         buzon->recibir_Mensaje(9999);
-        cout<<"termino un contratista"<<endl;
-        --idParaContratista;
-    }*/
-	// Sucess
+        --contratistasActuales;
+    }
+    delete buzon;
 	closedir(dir);
     return 0;
 }
 
 void Lector::crearContratista(char *  directorio, int idParaContratista){
-    cout<< "Abri archivo " <<  idParaContratista<<" " << directorio << endl;
     Contratista * contratista = new Contratista(directorio, idParaContratista); // Crea al contratista
     contratista->leerArchivo();
 }

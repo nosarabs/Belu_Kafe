@@ -11,7 +11,8 @@ Contratista::~Contratista(){
 }
 
 void Contratista::leerArchivo(){
-    buzonC->enviar_Mensaje(201+this->id,""); //señal que se creo un contratista
+    strcpy(this->buzonC->un_Mensaje.mensaje,"");
+    buzonC->enviar_Mensaje(201+this->id,this->buzonC->un_Mensaje.mensaje); //señal que se creo un contratista
     this->buzonC->recibir_Mensaje(100+this->id);
     size_t b_size = 512;
     char * buffer = new char[b_size];
@@ -22,17 +23,14 @@ void Contratista::leerArchivo(){
     while (count = read(file, buffer, b_size))
     { 
         particionarArchivo(buffer, count);
-
-        //clean_buffer(buffer, b_size);
     }
-    cout << "Terminé de leer archivo" << this->id << endl;
     strcpy(this->buzonC->un_Mensaje.mensaje,"FIN");
     this->buzonC->enviar_Mensaje(this->id, this->buzonC->un_Mensaje.mensaje);
-    //this->buzonC->recibir_Mensaje(90000+this->id);
-    //delete buzonC;
+
+    this->buzonC->recibir_Mensaje(90000+this->id);
+    
     strcpy(this->buzonC->un_Mensaje.mensaje,"");
-    //buzonC->enviar_Mensaje(9999, this->buzonC->un_Mensaje.mensaje);
-    //delete buzonC;
+    buzonC->enviar_Mensaje(9999, this->buzonC->un_Mensaje.mensaje);
     delete[] buffer;
 }
 

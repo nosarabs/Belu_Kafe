@@ -22,11 +22,12 @@
         sizeof(un_Mensaje.chunk_Num)+sizeof(un_Mensaje.mensaje)+sizeof(un_Mensaje.id_Contratista)+sizeof(un_Mensaje.fin), 0);
     }
 
-    void Buzon::recibir_Mensaje(long id){
-        msgrcv (this->id_Cola, (struct msgbuf *)&un_Mensaje,
+    int Buzon::recibir_Mensaje(long id){
+        int recibido = msgrcv (this->id_Cola, (struct msgbuf *)&un_Mensaje,
         sizeof(un_Mensaje.chunk_Num)+sizeof(un_Mensaje.mensaje)+sizeof(un_Mensaje.id_Contratista)+sizeof(un_Mensaje.fin), id, 0);
         //cout << "Recibido mensaje tipo "<< id<< endl;
         //cout << "Mensaje = " << un_Mensaje.mensaje << endl;
+        return recibido;
     }
 
     Buzon::~Buzon(){

@@ -41,7 +41,7 @@ class Buzon{
          * que deseo recibir, es decir, si soy proceso 1 recibo mensajes
          * tipo 2, y si soy proceso 2 recibo mensajes tipo 1
          */
-        void recibir_Mensaje(long);
+        int recibir_Mensaje(long);
         /*
          * Destructor del Buzon
          */
