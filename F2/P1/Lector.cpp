@@ -11,7 +11,7 @@ Lector::~Lector(){
 
 }
 
-int Lector::obtenerDirectorio(char *path){
+int Lector::obtenerDirectorio(char *&path){
     Buzon * buzon= new Buzon();
     DIR* dir = opendir(path);
 
@@ -29,31 +29,33 @@ int Lector::obtenerDirectorio(char *path){
 			// ignorar archivos ocultos y directorios
 			if ( *entry->d_name == '.' )
 				continue;
+ 
 
 		}else{
-		 // agregar el directorio al path
+		 // agregar el directorio al pat
             char relative_path[PATH_MAX];
-            sprintf(relative_path, "%s/%s", path, entry->d_name);
+            sprintf(relative_path, "%s/%s",path, entry->d_name);
             if (!fork()) {
-                crearContratista(&relative_path[idParaContratista-1], idParaContratista);
+                crearContratista(&relative_path[0], idParaContratista);
+                return 0;
             } else {
                 ++idParaContratista;
             }
         }
 
 	}
-    /*while(idParaContratista==0){
+    /*while(idParaContratista!=0){
         buzon->recibir_Mensaje(9999);
+        cout<<"termino un contratista"<<endl;
         --idParaContratista;
     }*/
 	// Sucess
-	delete buzon;
 	closedir(dir);
     return 0;
 }
 
 void Lector::crearContratista(char *  directorio, int idParaContratista){
-    cout<< "Abri archivo " <<  idParaContratista << directorio << endl;
+    cout<< "Abri archivo " <<  idParaContratista<<" " << directorio << endl;
     Contratista * contratista = new Contratista(directorio, idParaContratista); // Crea al contratista
     contratista->leerArchivo();
 }

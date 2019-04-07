@@ -21,7 +21,7 @@ private:
 public:    
     Lector(/* args */);
     ~Lector();
-    int  obtenerDirectorio(char *);
+    int  obtenerDirectorio(char *&);
     void crearContratista(char *, int);
 };
 

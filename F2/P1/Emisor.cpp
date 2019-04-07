@@ -1,7 +1,7 @@
 #include "Emisor.h"
 
 Emisor::Emisor(){
-    hilosConstruidos=1;
+    this->hilosConstruidos=1;
     this->buzonC= new Buzon();
 }
 
@@ -12,15 +12,15 @@ Emisor::~Emisor(){
 void Emisor::Recibir(){
     cout<<"creado emisor"<<endl;
     while(true){
-        this->buzonC->recibir_Mensaje(10000);
-        cout<<"creare hilo"<<endl;
+        this->buzonC->recibir_Mensaje(201+hilosConstruidos);
+        cout<<"creare hilo "<<hilosConstruidos<<endl;
         pthread_t newthread;
-        mi_data data;
-        data.id=hilosConstruidos;
-        data.mi_buzon=this->buzonC;
+        //datos[(this->hilosConstruidos)-1].mi_buzon=buzonC;
         thread.push_back(newthread);
-        pthread_create(&thread[hilosConstruidos-1], NULL, &Emisor::hiloArchivo, (void*)&data);
-        ++hilosConstruidos;
+        pthread_create(&thread[(this->hilosConstruidos)-1], NULL, &Emisor::hiloArchivo, (void *)this->hilosConstruidos);
+        cout<<"creado"<<endl;
+        //hiloArchivo((void*)&data);
+        ++(this->hilosConstruidos);
     }
         for(int i=0; i<thread.size();++i)   
             pthread_join(thread[i], NULL);

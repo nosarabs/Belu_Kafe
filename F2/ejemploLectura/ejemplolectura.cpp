@@ -13,8 +13,8 @@ int main(int argc, char * argv[]){
     
     size_t b_size = 512; 
     char *buffer = new char[b_size];
-    ifstream fin(argv[1], ios::binary );
-    ofstream destino("CopiaFoto.jpg",ios::binary);
+    ifstream fin(argv[1],  ios::binary );
+    ofstream destino("CopiaFoto.jpg", ios::binary);
     clean_buffer(buffer, b_size);
     while (fin)
     {
