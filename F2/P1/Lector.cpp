@@ -33,11 +33,12 @@ int Lector::obtenerDirectorio(char *&path){
  
 
 		}else{
+            //Controlador para que solo existan dos contratistas
             if(contratistasActuales >= 2){
-                buzon->recibir_Mensaje(9999);
+                buzon->recibir_Mensaje(9999); //Señal recibida de algún contratista
                 --contratistasActuales;
             }
-		 // agregar el directorio al pat
+            // agregar el directorio al pat
             char relative_path[PATH_MAX];
             sprintf(relative_path, "%s/%s",path, entry->d_name);
             if (!fork()) {
@@ -49,6 +50,7 @@ int Lector::obtenerDirectorio(char *&path){
             }
         }
 	}
+    //Esperamos a que terminen los últimos contratistas
     while(contratistasActuales!=0){
         buzon->recibir_Mensaje(9999);
         --contratistasActuales;
@@ -61,4 +63,5 @@ int Lector::obtenerDirectorio(char *&path){
 void Lector::crearContratista(char *  directorio, int idParaContratista){
     Contratista * contratista = new Contratista(directorio, idParaContratista); // Crea al contratista
     contratista->leerArchivo();
+    delete contratista;
 }
