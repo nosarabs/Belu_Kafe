@@ -21,6 +21,7 @@ void Contratista::leerArchivo(){
     char * buffer = new char[b_size];
     int file = open(this->archivo, O_RDONLY);
     clean_buffer(buffer, b_size);
+    int count = 0;
     //Mientras haya bytes, lee 512B y envía a particionar
     while (count = read(file, buffer, b_size)){
         particionarArchivo(buffer, count);
