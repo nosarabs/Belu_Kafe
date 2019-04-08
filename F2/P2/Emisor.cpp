@@ -9,9 +9,15 @@ Emisor::~Emisor(){
 
 }
 
-void Emisor::Recibir(){
+void Emisor::Recibir(char * server){
 	pthread_mutex_t * mutexE = new pthread_mutex_t;
 	pthread_mutex_init(mutexE,NULL);
+	pthread_t threadSend;
+	mi_data2 * data2 = new mi_data2;
+	data2->ip= server;
+	data2->mensajitos = &this->mensajes;
+	pthread_create(&threadSend, NULL, &Emisor::hiloEnviador, (void *)data2);
+	
     while(true){
         int recibido = this->buzonC->recibir_Mensaje(201+hilosConstruidos);
         if(recibido == -1){
