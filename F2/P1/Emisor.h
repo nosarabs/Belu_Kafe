@@ -39,7 +39,7 @@ public:
         mi_data * dt=new mi_data;
         dt->id =(size_t)data;
         dt->mi_buzon=new Buzon();
-        string cadena = "nuevo" + to_string(dt->id) + ".jpg";
+        string cadena = "nuevo" + to_string(dt->id);
 	    int id = open( cadena.data(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR );
         strcpy(dt->mi_buzon->un_Mensaje.mensaje,"");
         dt->mi_buzon->enviar_Mensaje(100+dt->id, dt->mi_buzon->un_Mensaje.mensaje);
