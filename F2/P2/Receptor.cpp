@@ -55,7 +55,9 @@ void Receptor::conectar(){
 }
 
 void Receptor::desempaquetar(char * paquete){
-
+  mi_Mensaje msj = (mi_Mensaje)paquete;
+  
+  encolar(&msj.mensaje, msj.id_Mensaje, sizeof(msj));
 }
 void Receptor::encolar(char * mensajeUtil, long id, int tamano){
 
