@@ -85,6 +85,5 @@ void Contratista::empaquetar(char * archivo, int chunkNum){
 }
 
 void Contratista::enviarAlEmisor(){
-	this->buzonC->un_Mensaje.id_Contratista= this->id;
     buzonC->enviar_Mensaje(this->id,this->buzonC->un_Mensaje.mensaje);
 }

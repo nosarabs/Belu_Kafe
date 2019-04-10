@@ -15,8 +15,6 @@ typedef struct
     long id_Mensaje;
     int chunk_Num;
     char mensaje[128];
-    int id_Contratista;
-    bool fin;
 }mi_Mensaje;
 /*
  *Clase Buzon para establecer la comunicacion entre procesos

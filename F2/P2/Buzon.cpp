@@ -19,12 +19,12 @@
     void Buzon::enviar_Mensaje(long id,char * msj){
         un_Mensaje.id_Mensaje = id;
         msgsnd (this->id_Cola, (struct msgbuf *)&un_Mensaje, 
-        sizeof(un_Mensaje.chunk_Num)+sizeof(un_Mensaje.mensaje)+sizeof(un_Mensaje.id_Contratista)+sizeof(un_Mensaje.fin), 0);
+        sizeof(un_Mensaje.chunk_Num)+sizeof(un_Mensaje.mensaje), 0);
     }
 
     int Buzon::recibir_Mensaje(long id){
         int recibido = msgrcv (this->id_Cola, (struct msgbuf *)&un_Mensaje,
-        sizeof(un_Mensaje.chunk_Num)+sizeof(un_Mensaje.mensaje)+sizeof(un_Mensaje.id_Contratista)+sizeof(un_Mensaje.fin), id, 0);
+        sizeof(un_Mensaje.chunk_Num)+sizeof(un_Mensaje.mensaje), id, 0);
         //cout << "Recibido mensaje tipo "<< id<< endl;
         //cout << "Mensaje = " << un_Mensaje.mensaje << endl;
         return recibido;
