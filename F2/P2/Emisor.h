@@ -21,6 +21,7 @@ using namespace std;
 
 typedef struct{
 	int id;
+    int tamano;
 	char msj[128];
 	&mensaje operator=(&mensaje otro){
 		otro.id=id;
@@ -86,7 +87,8 @@ public:
         return NULL;
     }
     
-    static void* hiloEnviador(void * data){
+    static void* hiloEnviador(void * data){ //DEBERIA ENVIAR MENSAJE VACIO PARA QUE EL RECEPTOR SEPA QUE ACABOO EL ARCHIVO
+        //Y SE DEBE ENVIAR TAMBIEN EL TAMAÑO DEL MENSAJE PARA QUE EL EMISOR LO ESCRIBA
 		mi_data2 * dt = (mi_data2 *)data;
 		struct sockaddr_in address; 
 		int sock = 0, valread; 
