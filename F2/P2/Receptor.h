@@ -44,12 +44,10 @@ class Receptor{
          */
         void conectar();
 
-        /*método que extrae el id, el tamaño del mensaje y el mensaje util, los separa y envía a encolar
-         */
-        void desempaquetar(char *);
-
         /*Método que recibe el mensaje util y el id, y el tamaño del mensaje para proceder a encolarlo en la
-         * cola con su respectivo mensaje, prioridad y tamaño
+         * cola con su respectivo mensaje, prioridad y tamaño(llama a encolar_Mensaje de la cola), en una estructura de
+         datos almacena los id de los threads que ya estan creados si el id del mensaje que recibe NO está en la estructura
+         crea un thread con el respectivo id, si ya está no hace ningún thread.
          */
         void encolar(char *, long, int);
 
