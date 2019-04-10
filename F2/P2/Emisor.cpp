@@ -33,7 +33,6 @@ void Emisor::Recibir(char * server){
         pthread_create(&thread[(this->hilosConstruidos)-1], NULL, &Emisor::hiloArchivo, (void *)data);
         ++(this->hilosConstruidos);
     }
-	cout << mensajes.size() << endl;
 	for(int i=0; i<thread.size();++i)
 		pthread_join(thread[i], NULL);
 }
