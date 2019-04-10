@@ -40,23 +40,27 @@ void Receptor::conectar(){
       exit(EXIT_FAILURE);
   }
 
+  int new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
+  if (new_socket < 0){
+      perror("accept");
+      exit(EXIT_FAILURE);
+  } else {
+    printf("Conexión de la IP: ", address.sin_addr.s_addr, "Puerto: ", address.sin_port, " ha sido exitosa.");
+  }
+
   while(true){
-    sin_size = sizeof(struct sockaddr_in);
-    int new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
-    if (new_socket < 0){
-        perror("accept");
-        exit(EXIT_FAILURE);
-    } else {
-      printf("Conexión de la IP: ", address.sin_addr.s_addr, "Puerto: ", address.sin_port, " ha sido exitosa.");
-    }
     valread = read( new_socket , buffer, sizeof(mi_Mensaje));
+    if (valread < 0){
+        perror("read");
+        exit(EXIT_FAILURE);
+    }
     desempaquetar(buffer);
   }
 }
 
 void Receptor::desempaquetar(char * paquete){
   mi_Mensaje msj = (mi_Mensaje)paquete;
-  
+
   encolar(&msj.mensaje, msj.id_Mensaje, sizeof(msj));
 }
 void Receptor::encolar(char * mensajeUtil, long id, int tamano){
