@@ -9,10 +9,11 @@ Receptor::~Receptor(){
 }
 
 void Receptor::conectar(){
-  int server_fd, new_socket;
+  int server_fd, new_socket, valread;
   struct sockaddr_in address;
   int opt = 1;
   int addrlen = sizeof(address);
+  char * buffer = new char[sizeof(mi_Mensaje)];
 
   if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0){
       perror("socket failed");
@@ -40,13 +41,16 @@ void Receptor::conectar(){
   }
 
   while(true){
-    new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
+    sin_size = sizeof(struct sockaddr_in);
+    int new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
     if (new_socket < 0){
         perror("accept");
         exit(EXIT_FAILURE);
     } else {
       printf("Conexión de la IP: ", address.sin_addr.s_addr, "Puerto: ", address.sin_port, " ha sido exitosa.");
     }
+    valread = read( new_socket , buffer, sizeof(mi_Mensaje));
+    desempaquetar(buffer);
   }
 }
 
