@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <string>
 #include <pthread.h>
+#include <vector>
 #define PORT 9999
 /*El struct que utiliza el método que extrae los mensajes y escribe en los archivos
  */
@@ -18,6 +19,7 @@
 class Receptor{
     private:
      Cola * cola;
+     vector<long> vectorIds;
     public:
         /*constructor, inicializa cola de mensajes
          */
