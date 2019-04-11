@@ -20,6 +20,8 @@ class Receptor{
     private:
      Cola * cola;
      vector<long> vectorIds;
+     vector<pthread_t> vectorThreads;
+     size_t hilosConstruidos;
     public:
         /*constructor, inicializa cola de mensajes
          */

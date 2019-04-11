@@ -76,8 +76,17 @@ void Receptor::encolar(char * mensajeUtil, long id, int tamano){
    }
    if(!almacenado){
         vectorIds.push_back(id);
-        pthread_t threadWriter;
-        pthread_create(&threadWriter, NULL, &Receptor::hiloEscritor, (void *)id);
+        
+        pthread_t newthread;
+        vectorThreads.push_back(newthread);
+        pthread_create(&vectorThreads[(this->hilosConstruidos)-1], NULL, &Receptor::hiloEscritor, (void *)id);
+        ++(this->hilosConstruidos);
+        
+        for(int i=0; i<vectorThreads.size();++i){
+            pthread_join(vectorThreads[i], NULL);
+        }
+        // pthread_t threadWriter;
+        // pthread_create(&threadWriter, NULL, &Receptor::hiloEscritor, (void *)id);
    }
    
 }
