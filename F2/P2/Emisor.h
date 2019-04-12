@@ -29,6 +29,7 @@ typedef struct{
 
 typedef struct{
 	queue <mi_Mensaje> * mensajitos;
+    pthread_mutex_t * mutex2;
 	char * ip;
 }mi_data2;
 
@@ -114,10 +115,12 @@ public:
 		while(true){
             if(dt->mensajitos){
                 if(!dt->mensajitos->empty()){
+                    pthread_mutex_lock(dt->mutex2);
                     mi_Mensaje * msj = &(dt->mensajitos->front());
                     write(sock , msj , sizeof(mi_Mensaje));
                    // recv(sock , &m[0] , 2,MSG_WAITALL);
                     dt->mensajitos->pop();
+                    pthread_mutex_unlock(dt->mutex2);
                 }
             }else{
                 break;

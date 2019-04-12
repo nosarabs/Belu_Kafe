@@ -52,7 +52,6 @@ class Receptor{
          */
         static void* hiloEscritor(void * data){
             size_t idT= (size_t) data;
-            cout<<"creado hilo: "<<idT<<endl;
             string cadena = "nuevo" + to_string(idT);
             int id = open( cadena.data(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR );
             Cola * colaH= new Cola();
@@ -63,7 +62,6 @@ class Receptor{
                     write( id, colaH->un_Mensaje.mensaje, colaH->un_Mensaje.tamano);
                 }
             }while((colaH->un_Mensaje.tamano)!=0);
-            cout<<"termine soy hilo: "<<idT<<endl;
         }
 
 };

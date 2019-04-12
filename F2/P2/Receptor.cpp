@@ -55,7 +55,7 @@ void Receptor::conectar(){
             perror("recv");
             exit(EXIT_FAILURE);
         }
-       
+        
         desempaquetar(buffer);
         //write( new_socket , "ya", 2);
     }
@@ -65,8 +65,6 @@ void Receptor::conectar(){
 void Receptor::desempaquetar(char * paquete){
     mi_Mensaje * msj = (mi_Mensaje * )paquete;
     encolar(&(msj->mensaje[0]), msj->id_Mensaje, msj->tamano);
-    //cout<<msj->id_Mensaje<<endl;
-    //cout<<msj->tamano<<endl;
 }
 
 void Receptor::encolar(char * mensajeUtil, long id, int tamano){
@@ -81,7 +79,6 @@ void Receptor::encolar(char * mensajeUtil, long id, int tamano){
    if(!almacenado){
         vectorIds.push_back(id);
         pthread_t newthread;
-        cout<<"creando thread "<<id<<endl;
         vectorThreads.push_back(newthread);
         pthread_create(&vectorThreads[(this->hilosConstruidos)-1], NULL, &Receptor::hiloEscritor, (void *)id);
         ++(this->hilosConstruidos);

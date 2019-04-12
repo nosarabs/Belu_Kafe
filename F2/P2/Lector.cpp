@@ -55,7 +55,7 @@ int Lector::obtenerDirectorio(char *&path){
         buzon->recibir_Mensaje(9999);
         --contratistasActuales;
     }
-  //  delete buzon;
+    //delete buzon;
 	closedir(dir);
     return 0;
 }
