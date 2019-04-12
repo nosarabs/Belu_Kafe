@@ -2,6 +2,7 @@
 
 Receptor::Receptor(){
     this->cola=new Cola();
+    this->hilosConstruidos=1;
 }
 
 Receptor::~Receptor(){
@@ -69,7 +70,7 @@ void Receptor::desempaquetar(char * paquete){
 }
 
 void Receptor::encolar(char * mensajeUtil, long id, int tamano){
-   int cont=0;
+    int cont=0;
    bool almacenado = false;
    while(cont<vectorIds.size() && !almacenado){
        if(vectorIds[cont]==id){
@@ -79,8 +80,8 @@ void Receptor::encolar(char * mensajeUtil, long id, int tamano){
    }
    if(!almacenado){
         vectorIds.push_back(id);
-        
         pthread_t newthread;
+        cout<<"creando thread "<<id<<endl;
         vectorThreads.push_back(newthread);
         pthread_create(&vectorThreads[(this->hilosConstruidos)-1], NULL, &Receptor::hiloEscritor, (void *)id);
         ++(this->hilosConstruidos);
