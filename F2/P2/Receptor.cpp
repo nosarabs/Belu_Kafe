@@ -57,7 +57,7 @@ void Receptor::conectar(){
         }
        
         desempaquetar(buffer);
-        write( new_socket , "ya", 2);
+        //write( new_socket , "ya", 2);
     }
     delete buffer;
 }

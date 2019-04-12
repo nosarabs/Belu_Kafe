@@ -116,7 +116,7 @@ public:
                 if(!dt->mensajitos->empty()){
                     mi_Mensaje * msj = &(dt->mensajitos->front());
                     write(sock , msj , sizeof(mi_Mensaje));
-                    recv(sock , &m[0] , 2,MSG_WAITALL);
+                   // recv(sock , &m[0] , 2,MSG_WAITALL);
                     dt->mensajitos->pop();
                 }
             }else{
