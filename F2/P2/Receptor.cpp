@@ -45,27 +45,30 @@ void Receptor::conectar(){
         perror("accept");
         exit(EXIT_FAILURE);
     } else {
-        printf("Conexión de la IP: ", address.sin_addr.s_addr, "Puerto: ", address.sin_port, " ha sido exitosa.");
+        cout<<"Conexión de la IP: "<<address.sin_addr.s_addr<< " Puerto: "<< address.sin_port<<" ha sido exitosa."<<endl;
     }
 
     while(true){
-        valread = read( new_socket , buffer, sizeof(mi_Mensaje));
+        valread = recv( new_socket , buffer, sizeof(mi_Mensaje), MSG_WAITALL);
         if (valread < 0){
-            perror("read");
+            perror("recv");
             exit(EXIT_FAILURE);
         }
+       
         desempaquetar(buffer);
+        write( new_socket , "ya", 2);
     }
+    delete buffer;
 }
 
 void Receptor::desempaquetar(char * paquete){
     mi_Mensaje * msj = (mi_Mensaje * )paquete;
-    encolar(&(msj->mensaje[0]), msj->id_Mensaje, sizeof(msj->tamano));
-    cout<<msj->mensaje<<endl;
+    encolar(&(msj->mensaje[0]), msj->id_Mensaje, msj->tamano);
+    //cout<<msj->id_Mensaje<<endl;
+    //cout<<msj->tamano<<endl;
 }
 
 void Receptor::encolar(char * mensajeUtil, long id, int tamano){
-   cola->encolar_Mensaje(id, mensajeUtil, tamano);
    int cont=0;
    bool almacenado = false;
    while(cont<vectorIds.size() && !almacenado){
@@ -81,12 +84,9 @@ void Receptor::encolar(char * mensajeUtil, long id, int tamano){
         vectorThreads.push_back(newthread);
         pthread_create(&vectorThreads[(this->hilosConstruidos)-1], NULL, &Receptor::hiloEscritor, (void *)id);
         ++(this->hilosConstruidos);
-        
-        for(int i=0; i<vectorThreads.size();++i){
-            pthread_join(vectorThreads[i], NULL);
-        }
         // pthread_t threadWriter;
         // pthread_create(&threadWriter, NULL, &Receptor::hiloEscritor, (void *)id);
    }
+    cola->encolar_Mensaje(id, mensajeUtil, tamano);
    
 }

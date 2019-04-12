@@ -12,10 +12,12 @@
 #include <string>
 #include <pthread.h>
 #include <vector>
+#include <iostream>
 #define PORT 9999
 /*El struct que utiliza el método que extrae los mensajes y escribe en los archivos
  */
 
+using namespace std;
 class Receptor{
     private:
      Cola * cola;
@@ -50,17 +52,19 @@ class Receptor{
          */
         static void* hiloEscritor(void * data){
             size_t idT= (size_t) data;
+            cout<<"creado hilo: "<<idT<<endl;
             string cadena = "nuevo" + to_string(idT);
             int id = open( cadena.data(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR );
             Cola * colaH= new Cola();
-             do{
+            
+            do{
                 colaH->desencolar_Mensaje(idT);
-                if(strcmp(colaH->un_Mensaje.mensaje,"FIN")!=0)
+                if((colaH->un_Mensaje.tamano)!=0){
                     write( id, colaH->un_Mensaje.mensaje, colaH->un_Mensaje.tamano);
-            }while(strcmp(colaH->un_Mensaje.mensaje,"FIN")!=0);
-
+                }
+            }while((colaH->un_Mensaje.tamano)!=0);
+            cout<<"termine soy hilo: "<<idT<<endl;
         }
-
 
 };
 #endif

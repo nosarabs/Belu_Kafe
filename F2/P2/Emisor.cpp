@@ -20,12 +20,12 @@ void Emisor::Recibir(char * server){
 	
     while(true){
         int recibido = this->buzonC->recibir_Mensaje(201+hilosConstruidos);
-        if(recibido == -1){
+        /*if(recibido == -1){
             break;
-        }
+        }*/
         mi_data * data = new mi_data;
         data->id = hilosConstruidos;
-        data->mi_buzon = new Buzon();
+       // data->mi_buzon = new Buzon();
         data->mutex = mutexE;
         data->mensajes = &this->mensajes;
         pthread_t newthread;

@@ -53,16 +53,30 @@ public:
     
     static void* hiloArchivo(void * data){
         mi_data * dt=(mi_data *) data;
+        dt->mi_buzon=new Buzon();
         strcpy(dt->mi_buzon->un_Mensaje.mensaje,"");
         dt->mi_buzon->enviar_Mensaje(100+dt->id, dt->mi_buzon->un_Mensaje.mensaje);
         do{
             dt->mi_buzon->recibir_Mensaje(dt->id);
-            pthread_mutex_lock(dt->mutex);
-            mi_Mensaje men;
-            memcpy(men.mensaje,dt->mi_buzon->un_Mensaje.mensaje, dt->mi_buzon->un_Mensaje.chunk_Num);
-            men.id_Mensaje= dt->mi_buzon->un_Mensaje.id_Mensaje;
-            dt->mensajes->push(men);
-            pthread_mutex_unlock(dt->mutex);
+            if(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0){
+                pthread_mutex_lock(dt->mutex);
+                mi_Mensaje * men= new mi_Mensaje;
+                memcpy(men->mensaje,dt->mi_buzon->un_Mensaje.mensaje, dt->mi_buzon->un_Mensaje.chunk_Num);
+                men->id_Mensaje= dt->mi_buzon->un_Mensaje.id_Mensaje;
+                men->chunk_Num= dt->mi_buzon->un_Mensaje.chunk_Num;
+                dt->mensajes->push(*men);
+                pthread_mutex_unlock(dt->mutex);
+                delete men;
+            }else{
+                pthread_mutex_lock(dt->mutex);
+                mi_Mensaje * men= new mi_Mensaje;
+                strcpy(men->mensaje,"");
+                men->id_Mensaje= dt->mi_buzon->un_Mensaje.id_Mensaje;
+                men->chunk_Num= 0;
+                dt->mensajes->push(*men);
+                pthread_mutex_unlock(dt->mutex);
+                delete men;
+            }
         }while(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0);
         strcpy(dt->mi_buzon->un_Mensaje.mensaje,"");
         dt->mi_buzon->enviar_Mensaje(90000+dt->id, dt->mi_buzon->un_Mensaje.mensaje);
@@ -96,16 +110,18 @@ public:
 			printf("\nConnection Failed \n"); 
 			return NULL; 
 		}
+		char m[2];
 		while(true){
-            if(dt->mensajitos){
+            //if(dt->mensajitos){
                 if(!dt->mensajitos->empty()){
-                    mi_Mensaje msj = dt->mensajitos->front();
-                    send(sock , &msj , sizeof(mi_Mensaje), 0 );
+                    mi_Mensaje * msj = &(dt->mensajitos->front());
+                    write(sock , msj , sizeof(mi_Mensaje));
+                    recv(sock , &m[0] , 2,MSG_WAITALL);
                     dt->mensajitos->pop();
-                }
-            }else{
+              //  }
+            }/*else{
                 break;
-            }
+            }*/
 		}
 	}
 };
