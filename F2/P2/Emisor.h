@@ -117,8 +117,9 @@ public:
                 if(!dt->mensajitos->empty()){
                     pthread_mutex_lock(dt->mutex2);
                     mi_Mensaje * msj = &(dt->mensajitos->front());
+                    cout<<msj->id_Mensaje<<" ";
                     write(sock , msj , sizeof(mi_Mensaje));
-                   // recv(sock , &m[0] , 2,MSG_WAITALL);
+                    recv(sock , &m[0] , 2,MSG_WAITALL);
                     dt->mensajitos->pop();
                     pthread_mutex_unlock(dt->mutex2);
                 }

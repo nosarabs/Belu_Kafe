@@ -1,3 +1,0 @@
- 
-g++ leer.cpp Lector.cpp Buzon.cpp Contratista.cpp -o leer
-g++ emitir.cpp Emisor.cpp Buzon.cpp -pthread -o emi

@@ -47,7 +47,7 @@ public:
             dt->mi_buzon->recibir_Mensaje(dt->id);
             if(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0){
                 write( id, dt->mi_buzon->un_Mensaje.mensaje, dt->mi_buzon->un_Mensaje.chunk_Num);
-                cout<<dt->mi_buzon->un_Mensaje.mensaje<<endl;
+                //cout<<dt->mi_buzon->un_Mensaje.mensaje<<endl;
 	     }
         }while(strcmp(dt->mi_buzon->un_Mensaje.mensaje,"FIN")!=0);
         strcpy(dt->mi_buzon->un_Mensaje.mensaje,"");

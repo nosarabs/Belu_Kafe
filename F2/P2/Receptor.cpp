@@ -57,13 +57,14 @@ void Receptor::conectar(){
         }
         
         desempaquetar(buffer);
-        //write( new_socket , "ya", 2);
+        write( new_socket , "ya", 2);
     }
     delete buffer;
 }
 
 void Receptor::desempaquetar(char * paquete){
     mi_Mensaje * msj = (mi_Mensaje * )paquete;
+    //cout<<"Desempaquetar id de mensaje: "<<msj->id_Mensaje<<endl;
     encolar(&(msj->mensaje[0]), msj->id_Mensaje, msj->tamano);
 }
 
